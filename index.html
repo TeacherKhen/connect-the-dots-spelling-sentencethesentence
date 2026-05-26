@@ -628,7 +628,6 @@
         let syncQuestions = true;
         let currentUploadedImageBase64 = ""; 
 
-        /* CRITICAL MULTI-TOUCH FIX: Tracking unique active touch IDs separately for each team */
         let state = {
             left: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, activeTouchId: null, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false },
             right: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, activeTouchId: null, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false }
@@ -910,7 +909,6 @@
                 node.dataset.itemId = item.id;
                 node.dataset.token = item.token;
 
-                /* CRITICAL EVENT COUPLING FIX: Explicitly tracking and scoping pointer starts locally */
                 node.addEventListener('mousedown', (e) => handleNodeSelectionStart(e, side, item.id));
                 node.addEventListener('touchstart', (e) => {
                     if (e.changedTouches && e.changedTouches.length > 0) {
@@ -1145,7 +1143,6 @@
         function handleNodeSelectionStart(pointerData, side, itemId) {
             const sideState = state[side];
             
-            // Lock the tracking to this individual touch point ID to isolate players
             if (pointerData.identifier !== undefined) {
                 sideState.activeTouchId = pointerData.identifier;
             } else {
@@ -1154,7 +1151,6 @@
 
             sideState.currentChain = [itemId];
             
-            // Highlight selected node securely
             const container = document.getElementById(`canvas-container-${side}`);
             container.querySelectorAll('.dot-node').forEach(node => node.classList.remove('selected'));
             document.getElementById(`node-${side}-${itemId}`).classList.add('selected');
@@ -1173,18 +1169,15 @@
             state[side].lastMouseY = pointerData.clientY - rect.top;
         }
 
-        /* HARD-CODED MULTI-TOUCH GEOMETRY CHECKER (No overlapping or breaking allowed!) */
         function processPointerMoveInput(pointerData, side) {
             const sideState = state[side];
             if (!sideState.activeDrawing) return;
 
-            // Enforce Touch ID checking: don't let Team B's finger draw Team A's line
             if (pointerData.identifier !== undefined && sideState.activeTouchId !== pointerData.identifier) return;
             if (pointerData.identifier === undefined && sideState.activeTouchId !== 'mouse') return;
 
             trackPointerMovementCoordinates(pointerData, side);
 
-            // Mathematical collision detection relative to each team's sub-panel zones
             const currentQuestion = sideState.pool[sideState.index];
             if (!currentQuestion) return;
 
@@ -1199,10 +1192,9 @@
                 const nodeCenterX = nodeRect.left + radius;
                 const nodeCenterY = nodeRect.top + radius;
 
-                // Calculate distance between the specific locked touch point and the node center
                 const distance = Math.hypot(pointerData.clientX - nodeCenterX, pointerData.clientY - nodeCenterY);
 
-                if (distance < radius + 10) { // standard dot collision bubble
+                if (distance < radius + 10) { 
                     sideState.currentChain.push(tokenId);
                     element.classList.add('selected');
                     updateAnswerPreviewDisplay(side);
@@ -1217,7 +1209,6 @@
             const sideState = state[side];
             if (!sideState.activeDrawing) return;
 
-            // Ensure the lift-off event belongs to the locked owner touch ID
             if (pointerId !== undefined && sideState.activeTouchId !== pointerId) return;
             if (pointerId === undefined && sideState.activeTouchId !== 'mouse') return;
 
@@ -1276,7 +1267,7 @@
                 processPointerReleaseInput(undefined, 'right');
             });
 
-            // TV MULTI-TOUCH POINTER HOOKS (Ensures complete interface isolation)
+            // TV MULTI-TOUCH POINTER HOOKS
             window.addEventListener('touchmove', (e) => {
                 for (let i = 0; i < e.changedTouches.length; i++) {
                     processPointerMoveInput(e.changedTouches[i], 'left');
@@ -1297,24 +1288,37 @@
                 }
             });
 
+            /* * CRITICAL FIX: HIGH-SPEED MULTI-TOUCH BUTTON HANDLERS
+             * Bypassing regular 'click' actions and explicitly binding onto both 'touchstart' and 'mousedown' 
+             * with e.preventDefault() to guarantee that buttons fire cleanly and instantly on both sides simultaneously.
+             */
             ['left', 'right'].forEach(side => {
-                document.getElementById(`btn-check-${side}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    evaluateCurrentSubmission(side);
-                });
-                document.getElementById(`btn-reset-${side}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    clearCurrentPaths(side);
-                });
-                document.getElementById(`btn-feedback-next-${side}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    document.getElementById(`feedback-${side}`).classList.remove('active');
-                    setupChallengeRound(side);
-                });
-                document.getElementById(`btn-replay-${side}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    resetSingleTeamSession(side);
-                });
+                const checkBtn = document.getElementById(`btn-check-${side}`);
+                const resetBtn = document.getElementById(`btn-reset-${side}`);
+                const nextBtn = document.getElementById(`btn-feedback-next-${side}`);
+                const replayBtn = document.getElementById(`btn-replay-${side}`);
+
+                // Action execution wrapper mappings
+                const triggerCheck = (e) => { e.preventDefault(); e.stopPropagation(); evaluateCurrentSubmission(side); };
+                const triggerReset = (e) => { e.preventDefault(); e.stopPropagation(); clearCurrentPaths(side); };
+                const triggerNext  = (e) => { e.preventDefault(); e.stopPropagation(); document.getElementById(`feedback-${side}`).classList.remove('active'); setupChallengeRound(side); };
+                const triggerReplay = (e) => { e.preventDefault(); e.stopPropagation(); resetSingleTeamSession(side); };
+
+                // Bind Check Button
+                checkBtn.addEventListener('touchstart', triggerCheck, {passive: false});
+                checkBtn.addEventListener('mousedown', triggerCheck);
+
+                // Bind Reset Button
+                resetBtn.addEventListener('touchstart', triggerReset, {passive: false});
+                resetBtn.addEventListener('mousedown', triggerReset);
+
+                // Bind Next Button (Inside Overlay Card)
+                nextBtn.addEventListener('touchstart', triggerNext, {passive: false});
+                nextBtn.addEventListener('mousedown', triggerNext);
+
+                // Bind Replay Button (Inside Overlay Card)
+                replayBtn.addEventListener('touchstart', triggerReplay, {passive: false});
+                replayBtn.addEventListener('mousedown', triggerReplay);
             });
 
             document.getElementById('btn-toggle-mode').addEventListener('click', () => {
