@@ -23,12 +23,10 @@
             -webkit-user-select: none;
             margin: 0;
             padding: 0;
+            /* Prevents default browser multi-touch zooming and panning behaviors on Smart TVs */
+            touch-action: none;
         }
 
-        /* CRITICAL FONT FIX: Added Comic Sans MS, Arial Black, and system-ui fallbacks.
-           If a Smart TV cannot download Google Fonts, it will fallback beautifully 
-           without ruining your text sizes, alignment, or playful layout.
-        */
         body {
             font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', system-ui, -apple-system, sans-serif;
             font-weight: 700;
@@ -630,9 +628,10 @@
         let syncQuestions = true;
         let currentUploadedImageBase64 = ""; 
 
+        /* CRITICAL MULTI-TOUCH FIX: Tracking unique active touch IDs separately for each team */
         let state = {
-            left: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false },
-            right: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false }
+            left: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, activeTouchId: null, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false },
+            right: { pool: [], index: 0, score: 0, currentChain: [], activeDrawing: false, activeTouchId: null, lastMouseX: 0, lastMouseY: 0, confettiParticles: [], confettiActive: false }
         };
 
         const audioEl = document.getElementById('bg-audio');
@@ -687,7 +686,12 @@
             setupPasteFeature();
             
             window.addEventListener('resize', () => {
-                rebuildGameSession();
+                resizeCanvas('left');
+                drawCanvasVisuals('left');
+                if(isTeamMode) {
+                    resizeCanvas('right');
+                    drawCanvasVisuals('right');
+                }
             });
         });
 
@@ -774,9 +778,6 @@
             if(isTeamMode) setupChallengeRound('right');
         }
 
-        /************************************************************************
-         * ANTI-OVERLAP FORCE DISTRIBUTION & DETERMINISTIC PIXEL BUFFER GRID
-         ************************************************************************/
         function generateSpreadLayout(count, side) {
             const container = document.getElementById(`canvas-container-${side}`);
             const containerWidth = container.clientWidth || 600;
@@ -843,6 +844,7 @@
             const sideState = state[side];
             sideState.currentChain = [];
             sideState.activeDrawing = false;
+            sideState.activeTouchId = null;
 
             const container = document.getElementById(`canvas-container-${side}`);
             container.querySelectorAll('.dot-node').forEach(n => n.remove());
@@ -908,9 +910,12 @@
                 node.dataset.itemId = item.id;
                 node.dataset.token = item.token;
 
-                node.addEventListener('mousedown', (e) => handleNodeSelectionStart(e, side, item, node));
+                /* CRITICAL EVENT COUPLING FIX: Explicitly tracking and scoping pointer starts locally */
+                node.addEventListener('mousedown', (e) => handleNodeSelectionStart(e, side, item.id));
                 node.addEventListener('touchstart', (e) => {
-                    handleNodeSelectionStart(e, side, item, node);
+                    if (e.changedTouches && e.changedTouches.length > 0) {
+                        handleNodeSelectionStart(e.changedTouches[0], side, item.id);
+                    }
                 }, {passive: true});
 
                 container.appendChild(node);
@@ -1060,12 +1065,6 @@
             const container = document.getElementById(`canvas-container-${side}`);
             canvas.width = container.clientWidth;
             canvas.height = container.clientHeight;
-
-            const confCanvas = document.getElementById(`confetti-${side}`);
-            if(confCanvas) {
-                confCanvas.width = container.clientWidth;
-                confCanvas.height = container.clientHeight;
-            }
         }
 
         function drawCanvasVisuals(side) {
@@ -1141,74 +1140,89 @@
         }
 
         /************************************************************************
-         * INTERACTIVE CONNECTIONS INTERFACES CONTROL AND TOUCH EVENTS DRIVERS
+         * INDEPENDENT HIGH-SPEED MULTI-TOUCH COUPLING GAME MECHANICS
          ************************************************************************/
-        function handleNodeSelectionStart(e, side, item, node) {
-            e.stopPropagation();
+        function handleNodeSelectionStart(pointerData, side, itemId) {
             const sideState = state[side];
             
-            if(sideState.currentChain.includes(item.id)) return;
+            // Lock the tracking to this individual touch point ID to isolate players
+            if (pointerData.identifier !== undefined) {
+                sideState.activeTouchId = pointerData.identifier;
+            } else {
+                sideState.activeTouchId = 'mouse';
+            }
 
-            sideState.currentChain.push(item.id);
-            node.classList.add('selected');
+            sideState.currentChain = [itemId];
+            
+            // Highlight selected node securely
+            const container = document.getElementById(`canvas-container-${side}`);
+            container.querySelectorAll('.dot-node').forEach(node => node.classList.remove('selected'));
+            document.getElementById(`node-${side}-${itemId}`).classList.add('selected');
+            
             sideState.activeDrawing = true;
 
-            updateTrackingCoordinates(e, side);
+            trackPointerMovementCoordinates(pointerData, side);
             updateAnswerPreviewDisplay(side);
             drawCanvasVisuals(side);
         }
 
-        function updateTrackingCoordinates(e, side) {
+        function trackPointerMovementCoordinates(pointerData, side) {
             const container = document.getElementById(`canvas-container-${side}`);
             const rect = container.getBoundingClientRect();
-            
-            let clientX, clientY;
-            if(e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-
-            state[side].lastMouseX = clientX - rect.left;
-            state[side].lastMouseY = clientY - rect.top;
+            state[side].lastMouseX = pointerData.clientX - rect.left;
+            state[side].lastMouseY = pointerData.clientY - rect.top;
         }
 
-        function handlePointerTrackingMove(e, side) {
+        /* HARD-CODED MULTI-TOUCH GEOMETRY CHECKER (No overlapping or breaking allowed!) */
+        function processPointerMoveInput(pointerData, side) {
             const sideState = state[side];
-            if(!sideState.activeDrawing) return;
+            if (!sideState.activeDrawing) return;
 
-            updateTrackingCoordinates(e, side);
-            drawCanvasVisuals(side);
+            // Enforce Touch ID checking: don't let Team B's finger draw Team A's line
+            if (pointerData.identifier !== undefined && sideState.activeTouchId !== pointerData.identifier) return;
+            if (pointerData.identifier === undefined && sideState.activeTouchId !== 'mouse') return;
 
-            let clientX, clientY;
-            if(e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
+            trackPointerMovementCoordinates(pointerData, side);
 
-            const targetElement = document.elementFromPoint(clientX, clientY);
-            if(targetElement && targetElement.classList.contains('dot-node')) {
-                const targetSide = targetElement.id.split('-')[1];
-                const targetId = parseInt(targetElement.dataset.itemId);
+            // Mathematical collision detection relative to each team's sub-panel zones
+            const currentQuestion = sideState.pool[sideState.index];
+            if (!currentQuestion) return;
 
-                if(targetSide === side && !sideState.currentChain.includes(targetId)) {
-                    sideState.currentChain.push(targetId);
-                    targetElement.classList.add('selected');
+            currentQuestion.tokens.forEach((_, tokenId) => {
+                if (sideState.currentChain.includes(tokenId)) return;
+
+                const element = document.getElementById(`node-${side}-${tokenId}`);
+                if (!element) return;
+
+                const nodeRect = element.getBoundingClientRect();
+                const radius = nodeRect.width / 2;
+                const nodeCenterX = nodeRect.left + radius;
+                const nodeCenterY = nodeRect.top + radius;
+
+                // Calculate distance between the specific locked touch point and the node center
+                const distance = Math.hypot(pointerData.clientX - nodeCenterX, pointerData.clientY - nodeCenterY);
+
+                if (distance < radius + 10) { // standard dot collision bubble
+                    sideState.currentChain.push(tokenId);
+                    element.classList.add('selected');
                     updateAnswerPreviewDisplay(side);
                     AudioFX.playTone(380, 'sine', 0.05, 0, 0.8);
                 }
-            }
+            });
+
+            drawCanvasVisuals(side);
         }
 
-        function terminatePointerTracking(side) {
+        function processPointerReleaseInput(pointerId, side) {
             const sideState = state[side];
-            if(!sideState.activeDrawing) return;
+            if (!sideState.activeDrawing) return;
+
+            // Ensure the lift-off event belongs to the locked owner touch ID
+            if (pointerId !== undefined && sideState.activeTouchId !== pointerId) return;
+            if (pointerId === undefined && sideState.activeTouchId !== 'mouse') return;
+
             sideState.activeDrawing = false;
+            sideState.activeTouchId = null;
             drawCanvasVisuals(side);
         }
 
@@ -1231,12 +1245,10 @@
          * GLOBAL INPUT EVENT PIPELINE ATTACHMENTS MANAGER
          ************************************************************************/
         function initDOMEvents() {
-            // Intro Panel "Start Challenge" Action
             document.getElementById('btn-intro-start').addEventListener('click', () => {
                 document.getElementById('welcome-screen').classList.remove('active');
                 document.getElementById('rules-screen').classList.add('active'); 
                 
-                // Fire up ambient background loops on confirmation interaction 
                 if(audioEl.paused) {
                     audioEl.volume = volSlider.value;
                     audioEl.play().then(() => {
@@ -1246,35 +1258,62 @@
                 }
             });
 
-            // Intro Panel "Blogger Hub Redirect" External Trigger 
             document.getElementById('btn-blog-redirect').addEventListener('click', () => {
                 window.open('https://teacherkhenlearninghub.blogspot.com/search/label/HTML-CODED%20IMs?&max-results=5', '_blank');
             });
 
-            // Rules Panel Final Close Action
             document.getElementById('btn-close-rules').addEventListener('click', () => {
                 document.getElementById('rules-screen').classList.remove('active');
             });
 
+            // MOUSE EVENTS (Traditional fallback controls)
+            window.addEventListener('mousemove', (e) => {
+                processPointerMoveInput(e, 'left');
+                if(isTeamMode) processPointerMoveInput(e, 'right');
+            });
+            window.addEventListener('mouseup', (e) => {
+                processPointerReleaseInput(undefined, 'left');
+                processPointerReleaseInput(undefined, 'right');
+            });
+
+            // TV MULTI-TOUCH POINTER HOOKS (Ensures complete interface isolation)
+            window.addEventListener('touchmove', (e) => {
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    processPointerMoveInput(e.changedTouches[i], 'left');
+                    if(isTeamMode) processPointerMoveInput(e.changedTouches[i], 'right');
+                }
+            }, {passive: false});
+
+            window.addEventListener('touchend', (e) => {
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    processPointerReleaseInput(e.changedTouches[i].identifier, 'left');
+                    processPointerReleaseInput(e.changedTouches[i].identifier, 'right');
+                }
+            });
+            window.addEventListener('touchcancel', (e) => {
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    processPointerReleaseInput(e.changedTouches[i].identifier, 'left');
+                    processPointerReleaseInput(e.changedTouches[i].identifier, 'right');
+                }
+            });
+
             ['left', 'right'].forEach(side => {
-                const container = document.getElementById(`canvas-container-${side}`);
-                
-                container.addEventListener('mousemove', (e) => handlePointerTrackingMove(e, side));
-                container.addEventListener('touchmove', (e) => handlePointerTrackingMove(e, side), {passive: true});
-
-                window.addEventListener('mouseup', () => terminatePointerTracking(side));
-                window.addEventListener('touchend', () => terminatePointerTracking(side));
-
-                document.getElementById(`btn-check-${side}`).addEventListener('click', () => evaluateCurrentSubmission(side));
-                document.getElementById(`btn-reset-${side}`).addEventListener('click', () => clearCurrentPaths(side));
-                
-                document.getElementById(`btn-feedback-next-${side}`).addEventListener('click', () => {
+                document.getElementById(`btn-check-${side}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    evaluateCurrentSubmission(side);
+                });
+                document.getElementById(`btn-reset-${side}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    clearCurrentPaths(side);
+                });
+                document.getElementById(`btn-feedback-next-${side}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
                     document.getElementById(`feedback-${side}`).classList.remove('active');
                     setupChallengeRound(side);
                 });
-
-                document.getElementById(`btn-replay-${side}`).addEventListener('click', () => {
-                    resetSingleTeamTeamSession(side);
+                document.getElementById(`btn-replay-${side}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    resetSingleTeamSession(side);
                 });
             });
 
@@ -1307,9 +1346,7 @@
                     audioEl.play().then(() => {
                         audioBtn.innerText = "🎵 Music: ON";
                         audioBtn.style.background = "linear-gradient(to bottom, #2ecc71, #27ae60)";
-                    }).catch(() => {
-                        alert("Play interaction blocked by browser security. Tap anywhere on the stage window first.");
-                    });
+                    }).catch(() => {});
                 } else {
                     audioEl.pause();
                     audioBtn.innerText = "🎵 Music: OFF";
@@ -1322,10 +1359,6 @@
             });
         }
 
-        window.resetSingleTeamTeamSession = function(side) {
-            resetSingleTeamSession(side);
-        };
-
         /************************************************************************
          * EVALUATION ENGINE & INTERACTIVE ANSWER CHECKER MECHANICS LOGIC
          ************************************************************************/
@@ -1333,6 +1366,7 @@
             const sideState = state[side];
             sideState.currentChain = [];
             sideState.activeDrawing = false;
+            sideState.activeTouchId = null;
             
             const container = document.getElementById(`canvas-container-${side}`);
             container.querySelectorAll('.dot-node').forEach(node => node.classList.remove('selected'));
@@ -1392,13 +1426,11 @@
         function renderSettingsUI() {
             const container = document.getElementById('settings-questions-container');
             container.innerHTML = '';
-            
             document.getElementById('pool-count-label').innerText = questionPool.length;
 
             questionPool.forEach((q, idx) => {
                 const row = document.createElement('div');
                 row.className = 'question-list-item';
-                
                 let imgThumbHtml = q.image ? `<img src="${q.image}" style="max-height:35px; border-radius:4px; margin-right:8px; vertical-align:middle;">` : '';
                 
                 row.innerHTML = `
@@ -1416,7 +1448,6 @@
         function executeAppendQuestionAction() {
             const type = document.getElementById('input-type').value;
             let rawContent = document.getElementById('input-content').value;
-
             rawContent = rawContent.replace(/\s+/g, ' ').trim();
 
             if(!rawContent) {
@@ -1435,11 +1466,6 @@
                 answer = cleanWord;
             }
 
-            if(tokens.length === 0) {
-                alert("Failed parsing text content into single array processing components tokens!");
-                return;
-            }
-
             const newQuestion = {
                 id: Date.now() + Math.random(),
                 type: type,
@@ -1449,8 +1475,8 @@
             };
 
             questionPool.push(newQuestion);
-            
             document.getElementById('input-content').value = '';
+            
             const pasteZone = document.getElementById('image-paste-zone');
             pasteZone.innerHTML = "Click here & paste your photo (Ctrl+V)";
             pasteZone.style.borderColor = "var(--light-green)";
@@ -1495,11 +1521,9 @@
                         questionPool = compiledData;
                         savePoolToStorage();
                         alert("Configuration pool data structure parsed and synchronized successfully!");
-                    } else {
-                        alert("Malformed data model pattern structure! JSON profile requires top level vector arrays mapping signatures.");
                     }
                 } catch(error) {
-                    alert("Failure parsing validation target matrix records: " + error.message);
+                    alert("Failure parsing validation target matrix records.");
                 }
             };
             readerInstance.readAsText(TargetFile);
