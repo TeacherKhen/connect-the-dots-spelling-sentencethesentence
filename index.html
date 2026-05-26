@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jungle Connect-the-Dots Educational Game</title>
     <style>
-        /* Import an EFL-friendly, highly legible comic font for young learners */
+        /* Import web fonts with high-priority swap display */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght=700&display=swap');
 
         :root {
@@ -25,8 +25,13 @@
             padding: 0;
         }
 
+        /* CRITICAL FONT FIX: Added Comic Sans MS, Arial Black, and system-ui fallbacks.
+           If a Smart TV cannot download Google Fonts, it will fallback beautifully 
+           without ruining your text sizes, alignment, or playful layout.
+        */
         body {
-            font-family: 'Comic Neue', 'Fredoka One', cursive, sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', system-ui, -apple-system, sans-serif;
+            font-weight: 700;
             background-color: #1a3a2a;
             color: var(--cream);
             overflow: hidden;
@@ -61,7 +66,7 @@
             font-size: 28px;
             color: var(--gold);
             text-shadow: 2px 2px #000;
-            font-family: 'Fredoka One', cursive, sans-serif;
+            font-family: 'Fredoka One', 'Arial Black', Impact, sans-serif;
         }
 
         .global-controls {
@@ -72,7 +77,7 @@
 
         /* Buttons Style */
         .jungle-btn {
-            font-family: 'Comic Neue', sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', sans-serif;
             font-weight: 700;
             background: linear-gradient(to bottom, var(--wood-brown), #5c3a21);
             color: var(--cream);
@@ -295,7 +300,7 @@
             font-weight: bold;
             margin-bottom: 15px;
             text-shadow: 2px 2px #000;
-            font-family: 'Fredoka One', cursive, sans-serif;
+            font-family: 'Fredoka One', 'Arial Black', Impact, sans-serif;
         }
         .feedback-success { color: #2ecc71; }
         .feedback-fail { color: #e74c3c; }
@@ -308,16 +313,16 @@
             background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Pushes the menu controls nicely to the bottom */
+            justify-content: flex-end; 
             align-items: center;
-            padding-bottom: 80px; /* Space from the bottom edge of the smart TV/iPad screen */
+            padding-bottom: 80px; 
         }
 
         .intro-action-container {
             display: flex;
             gap: 25px;
             z-index: 10;
-            background: rgba(0, 0, 0, 0.4); /* Subtle ambient shading to make buttons pop off the background artwork */
+            background: rgba(0, 0, 0, 0.4); 
             padding: 15px 30px;
             border-radius: 50px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
@@ -363,7 +368,7 @@
             margin-bottom: 12px;
             border-bottom: 1px solid var(--wood-brown);
             padding-bottom: 4px;
-            font-family: 'Fredoka One', sans-serif;
+            font-family: 'Fredoka One', 'Arial Black', sans-serif;
         }
 
         .form-group {
@@ -525,7 +530,7 @@
 
         <div class="feedback-overlay active" id="welcome-screen" style="z-index: 200;">
             <div class="intro-action-container">
-                <button class="jungle-btn green-btn" id="btn-intro-start" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', sans-serif;">🎮 Start Challenge</button>
+                <button class="jungle-btn green-btn" id="btn-intro-start" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', 'Arial Black', sans-serif;">🎮 Start Challenge</button>
                 <button class="jungle-btn orange-btn" id="btn-blog-redirect" style="font-size: 20px; padding: 12px 25px;">🌐 More Free Resources</button>
             </div>
         </div>
@@ -538,13 +543,13 @@
                     <p style="margin-top: 8px;">2. ✅ Click **"Check Answer"** to test your word sequence.</p>
                     <p style="margin-top: 8px; color: #ff7675;">⚠️ **Be careful!** If your answer is wrong, you will **lose 1 point** (-1)! You can try again until you solve it!</p>
                 </div>
-                <button class="jungle-btn green-btn" id="btn-close-rules" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', sans-serif;">🎮 Play Game</button>
+                <button class="jungle-btn green-btn" id="btn-close-rules" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', 'Arial Black', sans-serif;">🎮 Play Game</button>
             </div>
         </div>
 
         <section id="settings-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: var(--gold); font-family: 'Fredoka One', sans-serif;">⚙️ Teacher Administration Control Console</h2>
+                <h2 style="color: var(--gold); font-family: 'Fredoka One', 'Arial Black', sans-serif;">⚙️ Teacher Administration Control Console</h2>
                 <button class="jungle-btn green-btn" id="btn-close-settings">💾 Save and Play</button>
             </div>
 
