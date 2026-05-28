@@ -230,8 +230,8 @@
         /* Enriched Circle Node Elements */
         .dot-node {
             position: absolute;
-            width: 145px; /* Increased 30% from 110px */
-            height: 145px; /* Increased 30% from 110px */
+            width: 145px; 
+            height: 145px; 
             border-radius: 50%;
             background: radial-gradient(circle, #ffeaa7, #fdcb6e);
             border: 6px solid var(--wood-brown);
@@ -240,15 +240,18 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 32px; /* Increased from 24px */
+            font-size: 32px; 
             color: #2d3436;
             cursor: pointer;
             z-index: 3;
             transform: translate(-50%, -50%);
             transition: transform 0.2s, background 0.3s;
             text-align: center;
-            word-break: break-word;
-            padding: 12px;
+            /* CRITICAL FIX: Forces text to remain intact on one line */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+            padding: 8px;
             line-height: 1.1;
         }
 
@@ -795,41 +798,31 @@
             let attempts = 0;
             const maxAttempts = 15000; 
 
-            // Find longest word size length
             let maxLength = 0;
             tokens.forEach(tok => {
                 if (tok.length > maxLength) maxLength = tok.length;
             });
 
-            // TARGETED 30% SCALE INJECTION UPGRADE
-            let dotDiameter = 145; // Base 110px increased by 30% -> ~145px
-            let fontStyleSize = "32px"; // Increased from 24px
+            let dotDiameter = 145; 
             
             if (isTeamMode) {
                 if (maxLength > 6 || count > 6) {
-                    dotDiameter = 100;        // Base 75px increased by ~30% -> 100px
-                    fontStyleSize = "26px";    // Crisp visible text
+                    dotDiameter = 100;        
                 } else {
-                    dotDiameter = 125;        // Base 95px increased by ~30% -> 125px
-                    fontStyleSize = "28px";    // Excellent classroom sight distance
+                    dotDiameter = 125;        
                 }
             } else {
                 if (maxLength > 8) {
                     dotDiameter = 110;
-                    fontStyleSize = "22px";
                 } else if (maxLength > 5 || count > 6) {
                     dotDiameter = 130;
-                    fontStyleSize = "26px";
                 }
             }
 
             const circleRadius = dotDiameter / 2;
-            
-            // Re-tuned boundary calculations for safety buffers
             const minBufferDistance = isTeamMode ? 10 : 25; 
             const requiredDistanceBetweenCenters = dotDiameter + minBufferDistance;
 
-            // Keeps circles inside view box safely away from border boundaries
             const xPadding = circleRadius + 20;
             const yPadding = circleRadius + 20;
 
@@ -851,12 +844,11 @@
                     }
 
                     if (!overlapDetected) {
-                        points.push({ x: testX, y: testY, size: dotDiameter, fontSize: fontStyleSize });
+                        points.push({ x: testX, y: testY, size: dotDiameter });
                         foundValidSpot = true;
                     }
                 }
 
-                // Grid mapping distribution strategy fallback failsafe
                 if (!foundValidSpot) {
                     const cols = Math.ceil(Math.sqrt(count));
                     const rows = Math.ceil(count / cols);
@@ -868,10 +860,23 @@
                     
                     let fallX = xPadding + (colIdx * cellW) + (cellW / 2);
                     let fallY = yPadding + (rowIdx * cellH) + (cellH / 2);
-                    points.push({ x: fallX, y: fallY, size: dotDiameter, fontSize: fontStyleSize });
+                    points.push({ x: fallX, y: fallY, size: dotDiameter });
                 }
             }
             return points;
+        }
+
+        /* Helper to check approximate text size and fit inside circle bounds */
+        function calculateBestFontSize(text, diameter) {
+            let baseSize = 32;
+            if (isTeamMode) baseSize = diameter * 0.22;
+            else baseSize = diameter * 0.24;
+
+            // CRITICAL FIX: Smart scaling engine based on string text characters length
+            if (text.length > 8) return `${baseSize * 0.55}px`;
+            if (text.length > 6) return `${baseSize * 0.7}px`;
+            if (text.length > 4) return `${baseSize * 0.85}px`;
+            return `${baseSize}px`;
         }
 
         function setupChallengeRound(side) {
@@ -915,7 +920,9 @@
                 
                 dotElement.style.width = `${nodeCoords.size}px`;
                 dotElement.style.height = `${nodeCoords.size}px`;
-                dotElement.style.fontSize = nodeCoords.fontSize;
+                
+                // CRITICAL FIX: Dynamically recalculates font size per unique text token structure
+                dotElement.style.fontSize = calculateBestFontSize(obj.text, nodeCoords.size);
                 
                 dotElement.style.left = `${nodeCoords.x}px`;
                 dotElement.style.top = `${nodeCoords.y}px`;
@@ -973,7 +980,7 @@
                 }
             });
 
-            ctx.lineWidth = 10; // Slightly thickened line to match larger circles
+            ctx.lineWidth = 10; 
             ctx.strokeStyle = "rgba(255, 183, 3, 0.9)"; 
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
@@ -998,7 +1005,9 @@
         }
 
         function handleInteractionStart(e, side, nodeIdx) {
+            if (e.target.classList.contains('jungle-btn')) return;
             if (e.type === 'touchstart') e.preventDefault();
+            
             AudioFX.init();
 
             const sideState = state[side];
@@ -1026,6 +1035,7 @@
 
         function refreshNodesHighlightingStyles(side) {
             const container = document.getElementById(`canvas-container-${side}`);
+            if (!container) return;
             container.querySelectorAll('.dot-node').forEach(node => {
                 const arrIndex = parseInt(node.dataset.arrayIndex);
                 if (state[side].currentChain.includes(arrIndex)) {
@@ -1069,7 +1079,6 @@
                 const nY = parseFloat(node.dataset.posY);
                 const radius = node.clientWidth / 2;
 
-                // Hitbox expands to match large circles comfortably
                 if (Math.hypot(mouseX - nX, mouseY - nY) < radius + 20) {
                     if (!sideState.currentChain.includes(arrIdx)) {
                         sideState.currentChain.push(arrIdx);
@@ -1092,7 +1101,7 @@
         }
 
         /************************************************************************
-         * CRITICAL GAME MECHANICS VALUATION PARSER
+         * CORE CHALLENGE EVALUATION ENGINE
          ************************************************************************/
         function evaluateSubmittedSequence(side) {
             const sideState = state[side];
@@ -1157,7 +1166,7 @@
         }
 
         /************************************************************************
-         * CELEBRATION VISUAL CONFETTI PARTICLES SIMULATION ANIMATOR SYSTEM
+         * CELEBRATION VISUAL CONFETTI ANIMATION SYSTEM
          ************************************************************************/
         function triggerConfettiExplosion(side) {
             const sideState = state[side];
@@ -1223,33 +1232,35 @@
         }
 
         /************************************************************************
-         * CORE INTERACTION DELEGATORS EVENT INITIALIZERS MAPPINGS
+         * CORE INTERACTION EVENT INITIALIZERS MAPPINGS
          ************************************************************************/
         function initDOMEvents() {
-            window.addEventListener('mousemove', (e) => {
-                trackingMoveProcess(e.clientX, e.clientY, 'left');
-                trackingMoveProcess(e.clientX, e.clientY, 'right');
-            });
-            window.addEventListener('mouseup', () => {
-                closeInteractionSequence('left');
-                closeInteractionSequence('right');
-            });
+            const zones = ['left', 'right'];
+            zones.forEach(side => {
+                const zoneContainer = document.getElementById(`canvas-container-${side}`);
+                if (!zoneContainer) return;
 
-            window.addEventListener('touchmove', (e) => {
-                Array.from(e.touches).forEach(t => {
-                    if (state.left.activeDrawing && t.identifier === state.left.activeTouchId) {
-                        trackingMoveProcess(t.clientX, t.clientY, 'left');
-                    }
-                    if (state.right.activeDrawing && t.identifier === state.right.activeTouchId) {
-                        trackingMoveProcess(t.clientX, t.clientY, 'right');
-                    }
+                zoneContainer.addEventListener('mousemove', (e) => {
+                    trackingMoveProcess(e.clientX, e.clientY, side);
                 });
-            }, { passive: false });
+                zoneContainer.addEventListener('mouseup', () => {
+                    closeInteractionSequence(side);
+                });
 
-            window.addEventListener('touchend', (e) => {
-                Array.from(e.changedTouches).forEach(t => {
-                    if (t.identifier === state.left.activeTouchId) closeInteractionSequence('left');
-                    if (t.identifier === state.right.activeTouchId) closeInteractionSequence('right');
+                zoneContainer.addEventListener('touchmove', (e) => {
+                    Array.from(e.touches).forEach(t => {
+                        if (state[side].activeDrawing && t.identifier === state[side].activeTouchId) {
+                            trackingMoveProcess(t.clientX, t.clientY, side);
+                        }
+                    });
+                }, { passive: false });
+
+                zoneContainer.addEventListener('touchend', (e) => {
+                    Array.from(e.changedTouches).forEach(t => {
+                        if (t.identifier === state[side].activeTouchId) {
+                            closeInteractionSequence(side);
+                        }
+                    });
                 });
             });
 
@@ -1343,7 +1354,7 @@
         }
 
         /************************************************************************
-         * TEACHER ADMINISTRATIVE DATA ARCHITECTURE HOOKS SYSTEMS
+         * TEACHER ADMINISTRATIVE DATA HARDWARE ARCHITECTURE HOOKS
          ************************************************************************/
         function renderSettingsUI() {
             const container = document.getElementById('settings-questions-container');
@@ -1359,7 +1370,7 @@
                         <span>${q.answer}</span>
                         ${q.image ? '<span style="color:var(--light-green); margin-left:8px;">🖼️ (Image Attached)</span>' : ''}
                     </div>
-                    <button class="jungle-btn btn-sm" style="background:#rgba(0,0,0,0.4); border-color:#d63031; padding:4px 10px; color:#ff7675;" onclick="deleteChallengeElementByIndex(${idx})">Remove</button>
+                    <button class="jungle-btn btn-sm" style="background:rgba(0,0,0,0.4); border-color:#d63031; padding:4px 10px; color:#ff7675;" onclick="deleteChallengeElementByIndex(${idx})">Remove</button>
                 `;
                 container.appendChild(row);
             });
@@ -1446,12 +1457,12 @@
                     if(Array.isArray(parsedStructure)) {
                         questionPool = parsedStructure;
                         savePoolToStorage();
-                        alert("Database configuration profile parsed and imported successfully!");
+                        alert("Database configuration profile imported successfully! Old questions cleared.");
                     } else {
-                        alert("Invalid challenge data schema architecture file formatting format configuration layout.");
+                        alert("Invalid challenge data schema configuration file.");
                     }
                 } catch(err) {
-                    alert("Error parsing system asset metrics file profiles logs components.");
+                    alert("Error parsing system asset metrics profile files logs components.");
                 }
             };
             reader.readAsText(targetFile);
