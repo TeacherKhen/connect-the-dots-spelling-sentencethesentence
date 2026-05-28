@@ -230,17 +230,17 @@
         /* Enriched Circle Node Elements */
         .dot-node {
             position: absolute;
-            width: 110px; 
-            height: 110px; 
+            width: 145px; /* Increased 30% from 110px */
+            height: 145px; /* Increased 30% from 110px */
             border-radius: 50%;
             background: radial-gradient(circle, #ffeaa7, #fdcb6e);
-            border: 5px solid var(--wood-brown);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.7);
+            border: 6px solid var(--wood-brown);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 0 12px rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 24px; 
+            font-size: 32px; /* Increased from 24px */
             color: #2d3436;
             cursor: pointer;
             z-index: 3;
@@ -248,7 +248,7 @@
             transition: transform 0.2s, background 0.3s;
             text-align: center;
             word-break: break-word;
-            padding: 8px;
+            padding: 12px;
             line-height: 1.1;
         }
 
@@ -260,7 +260,7 @@
             background: radial-gradient(circle, #55efc4, #00b894);
             border-color: #006266;
             color: #fff;
-            box-shadow: 0 0 20px #55efc4;
+            box-shadow: 0 0 25px #55efc4;
         }
 
         /* Generic Overlay Layout style used by Welcome message and Feedback boards */
@@ -299,6 +299,12 @@
             margin-bottom: 15px;
             text-shadow: 2px 2px #000;
             font-family: 'Fredoka One', 'Arial Black', Impact, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            width: 100%;
         }
         .feedback-success { color: #2ecc71; }
         .feedback-fail { color: #e74c3c; }
@@ -312,8 +318,8 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end; 
-            align-items: center;
             padding-bottom: 80px; 
+            align-items: center;
         }
 
         .intro-action-container {
@@ -349,7 +355,7 @@
             .settings-grid { grid-template-columns: 1fr; }
             #game-stage { flex-direction: column; }
             .game-zone:nth-child(2) { border-left: none; border-top: 5px dashed var(--wood-brown); }
-            .dot-node { width: 90px; height: 90px; font-size: 18px; }
+            .dot-node { width: 95px; height: 95px; font-size: 20px; }
             .answer-box { font-size: 24px; }
             .intro-action-container { flex-direction: column; gap: 15px; border-radius: 20px; }
         }
@@ -482,9 +488,9 @@
 
                 <div class="feedback-overlay" id="feedback-left">
                     <div class="wooden-sign feedback-card">
-                        <div class="feedback-text" id="feedback-text-left">Well Done!</div>
-                        <p id="feedback-sub-left" style="margin-bottom:20px; color:#fff; font-size: 20px;"></p>
-                        <div style="display:flex; justify-content:center; gap:10px;">
+                        <div class="feedback-text" id="feedback-text-left"><span>🌴</span><span>Magnificent Score!</span><span>🌴</span></div>
+                        <p id="feedback-sub-left" style="margin-bottom:20px; color:#fff; font-size: 20px; text-align: center; width: 100%;"></p>
+                        <div style="display:flex; justify-content:center; gap:10px; width: 100%;">
                             <button class="jungle-btn green-btn" id="btn-feedback-next-left" style="font-size: 18px;">Next Challenge</button>
                             <button class="jungle-btn" id="btn-replay-left" style="font-size: 18px; display:none; background: linear-gradient(to bottom, #ffb703, #fb8500); border-color:#d4a373;">🔄 Replay Game</button>
                         </div>
@@ -515,9 +521,9 @@
 
                 <div class="feedback-overlay" id="feedback-right">
                     <div class="wooden-sign feedback-card">
-                        <div class="feedback-text" id="feedback-text-right">Well Done!</div>
-                        <p id="feedback-sub-right" style="margin-bottom:20px; color:#fff; font-size: 20px;"></p>
-                        <div style="display:flex; justify-content:center; gap:10px;">
+                        <div class="feedback-text" id="feedback-text-right"><span>🌴</span><span>Magnificent Score!</span><span>🌴</span></div>
+                        <p id="feedback-sub-right" style="margin-bottom:20px; color:#fff; font-size: 20px; text-align: center; width: 100%;"></p>
+                        <div style="display:flex; justify-content:center; gap:10px; width: 100%;">
                             <button class="jungle-btn green-btn" id="btn-feedback-next-right" style="font-size: 18px;">Next Challenge</button>
                             <button class="jungle-btn" id="btn-replay-right" style="font-size: 18px; display:none; background: linear-gradient(to bottom, #ffb703, #fb8500); border-color:#d4a373;">🔄 Replay Game</button>
                         </div>
@@ -535,11 +541,11 @@
 
         <div class="feedback-overlay" id="rules-screen" style="z-index: 199;">
             <div class="wooden-sign feedback-card" style="padding: 30px 20px;">
-                <div class="feedback-text" style="color: var(--gold);">🌴 Game Guidelines 🌴</div>
+                <div class="feedback-text" style="color: var(--gold); display: flex; align-items: center; justify-content: center; gap: 10px;"><span>🌴</span><span>Game Guidelines</span><span>🌴</span></div>
                 <div style="color: #fff; font-size: 20px; line-height: 1.6; margin-bottom: 25px; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
-                    <p>1. 👈 **Drag your finger or mouse** from dot to dot to connect letters or words in order.</p>
-                    <p style="margin-top: 8px;">2. ✅ Click **"Check Answer"** to test your word sequence.</p>
-                    <p style="margin-top: 8px; color: #ff7675;">⚠️ **Be careful!** If your answer is wrong, you will **lose 1 point** (-1)! You can try again until you solve it!</p>
+                    <p>1. Drag your finger or mouse from dot to dot to connect letters or words in order.</p>
+                    <p style="margin-top: 8px;">2. Click <strong>"Check Answer"</strong> to test your word sequence.</p>
+                    <p style="margin-top: 8px; color: #ff7675;">⚠️ Be careful! If your answer is wrong, you will <strong>lose 1 point</strong> (-1)! You can try again until you solve it!</p>
                 </div>
                 <button class="jungle-btn green-btn" id="btn-close-rules" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', 'Arial Black', sans-serif;">🎮 Play Game</button>
             </div>
@@ -777,247 +783,605 @@
             if(isTeamMode) setupChallengeRound('right');
         }
 
-        function generateSpreadLayout(count, side) {
+        /************************************************************************
+         * RANDOMIZED PLACEMENT & OVERLAP PROTECTION DETECTOR ENGINE
+         ************************************************************************/
+        function generateSpreadLayout(count, side, tokens) {
             const container = document.getElementById(`canvas-container-${side}`);
-            const containerWidth = container.clientWidth || 600;
-            const containerHeight = container.clientHeight || 400;
-
-            const minDistancePixels = Math.max(140, containerWidth * 0.22); 
+            const containerWidth = container.getBoundingClientRect().width || container.clientWidth || 600;
+            const containerHeight = container.getBoundingClientRect().height || container.clientHeight || 400;
 
             let points = [];
             let attempts = 0;
-            let success = false;
+            const maxAttempts = 15000; 
 
-            while (attempts < 150 && !success) {
-                points = [];
-                success = true;
+            // Find longest word size length
+            let maxLength = 0;
+            tokens.forEach(tok => {
+                if (tok.length > maxLength) maxLength = tok.length;
+            });
 
-                for (let i = 0; i < count; i++) {
-                    let p = {
-                        x: 15 + Math.random() * 70, 
-                        y: 20 + Math.random() * 60  
-                    };
+            // TARGETED 30% SCALE INJECTION UPGRADE
+            let dotDiameter = 145; // Base 110px increased by 30% -> ~145px
+            let fontStyleSize = "32px"; // Increased from 24px
+            
+            if (isTeamMode) {
+                if (maxLength > 6 || count > 6) {
+                    dotDiameter = 100;        // Base 75px increased by ~30% -> 100px
+                    fontStyleSize = "26px";    // Crisp visible text
+                } else {
+                    dotDiameter = 125;        // Base 95px increased by ~30% -> 125px
+                    fontStyleSize = "28px";    // Excellent classroom sight distance
+                }
+            } else {
+                if (maxLength > 8) {
+                    dotDiameter = 110;
+                    fontStyleSize = "22px";
+                } else if (maxLength > 5 || count > 6) {
+                    dotDiameter = 130;
+                    fontStyleSize = "26px";
+                }
+            }
 
+            const circleRadius = dotDiameter / 2;
+            
+            // Re-tuned boundary calculations for safety buffers
+            const minBufferDistance = isTeamMode ? 10 : 25; 
+            const requiredDistanceBetweenCenters = dotDiameter + minBufferDistance;
+
+            // Keeps circles inside view box safely away from border boundaries
+            const xPadding = circleRadius + 20;
+            const yPadding = circleRadius + 20;
+
+            for (let i = 0; i < count; i++) {
+                let foundValidSpot = false;
+                while (!foundValidSpot && attempts < maxAttempts) {
+                    attempts++;
+                    
+                    let testX = xPadding + Math.random() * (containerWidth - xPadding * 2);
+                    let testY = yPadding + Math.random() * (containerHeight - yPadding * 2);
+
+                    let overlapDetected = false;
                     for (let j = 0; j < points.length; j++) {
-                        let dx = (p.x - points[j].x) * (containerWidth / 100);
-                        let dy = (p.y - points[j].y) * (containerHeight / 100);
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < minDistancePixels) {
-                            success = false;
+                        let distance = Math.hypot(testX - points[j].x, testY - points[j].y);
+                        if (distance < requiredDistanceBetweenCenters) {
+                            overlapDetected = true;
                             break;
                         }
                     }
 
-                    if (!success) break;
-                    points.push(p);
-                }
-                attempts++;
-            }
-
-            if (!success || points.length < count) {
-                points = [];
-                const cols = Math.ceil(Math.sqrt(count));
-                const rows = Math.ceil(count / cols);
-                let index = 0;
-
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        if (index >= count) break;
-                        let gridX = 20 + (c * (60 / Math.max(1, cols - 1)));
-                        let gridY = 25 + (r * (50 / Math.max(1, rows - 1)));
-                        
-                        if (cols === 1) gridX = 50;
-                        if (rows === 1) gridY = 50;
-
-                        points.push({ x: gridX, y: gridY });
-                        index++;
+                    if (!overlapDetected) {
+                        points.push({ x: testX, y: testY, size: dotDiameter, fontSize: fontStyleSize });
+                        foundValidSpot = true;
                     }
                 }
-            }
 
+                // Grid mapping distribution strategy fallback failsafe
+                if (!foundValidSpot) {
+                    const cols = Math.ceil(Math.sqrt(count));
+                    const rows = Math.ceil(count / cols);
+                    const cellW = (containerWidth - xPadding * 2) / cols;
+                    const cellH = (containerHeight - yPadding * 2) / rows;
+                    
+                    let colIdx = i % cols;
+                    let rowIdx = Math.floor(i / cols);
+                    
+                    let fallX = xPadding + (colIdx * cellW) + (cellW / 2);
+                    let fallY = yPadding + (rowIdx * cellH) + (cellH / 2);
+                    points.push({ x: fallX, y: fallY, size: dotDiameter, fontSize: fontStyleSize });
+                }
+            }
             return points;
         }
 
         function setupChallengeRound(side) {
             const sideState = state[side];
+            const currentQuestion = sideState.pool[sideState.index];
+
             sideState.currentChain = [];
             sideState.activeDrawing = false;
             sideState.activeTouchId = null;
 
+            document.getElementById(`score-${side}`).innerText = `Score: ${sideState.score} / ${sideState.pool.length}`;
+            document.getElementById(`ans-box-${side}`).innerText = "Connect dots to answer!";
+
+            const clueBox = document.getElementById(`clue-holder-${side}`);
+            if (currentQuestion && currentQuestion.image) {
+                clueBox.style.display = 'flex';
+                clueBox.innerHTML = `<img src="${currentQuestion.image}" alt="Clue asset">`;
+            } else {
+                clueBox.style.display = 'none';
+                clueBox.innerHTML = '';
+            }
+
             const container = document.getElementById(`canvas-container-${side}`);
-            container.querySelectorAll('.dot-node').forEach(n => n.remove());
+            container.querySelectorAll('.dot-node').forEach(node => node.remove());
 
-            document.getElementById(`ans-box-${side}`).innerText = "Connect dots in order!";
-            document.getElementById(`score-${side}`).innerText = `Score: ${sideState.score}`;
+            resizeCanvas(side);
+            if (!currentQuestion) return;
 
-            document.getElementById(`btn-feedback-next-${side}`).style.display = "inline-block";
-            document.getElementById(`btn-replay-${side}`).style.display = "none";
-
-            const clueHolder = document.getElementById(`clue-holder-${side}`);
-            clueHolder.innerHTML = "";
-            clueHolder.style.display = "none";
-
-            if(sideState.index >= sideState.pool.length) {
-                const teamLabelName = isTeamMode ? (side === 'left' ? "Team A" : "Team B") : "Single Player";
-                
-                AudioFX.victory();
-                triggerConfettiExplosion(side);
-
-                document.getElementById(`feedback-text-${side}`).innerText = "🏆 Pool Completed!";
-                document.getElementById(`feedback-text-${side}`).className = "feedback-text feedback-success";
-                document.getElementById(`feedback-sub-${side}`).innerHTML = `<strong style="color:var(--gold); font-size:26px;">${teamLabelName} Score Card</strong><br><br>Final Points Earned: ${sideState.score} points!`;
-                
-                document.getElementById(`btn-feedback-next-${side}`).style.display = "none";
-                document.getElementById(`btn-replay-${side}`).style.display = "inline-block";
-                
-                document.getElementById(`feedback-${side}`).classList.add('active');
-                return;
-            }
-
-            const currentQuestion = sideState.pool[sideState.index];
+            let originalTokens = currentQuestion.tokens;
+            let displayObjects = originalTokens.map((tok, idx) => ({ text: tok, origIndex: idx }));
             
-            if (currentQuestion.image) {
-                const imgNode = document.createElement('img');
-                imgNode.src = currentQuestion.image;
-                clueHolder.appendChild(imgNode);
-                clueHolder.style.display = "flex";
-            }
+            displayObjects.sort(() => Math.random() - 0.5);
 
-            const rawTokens = currentQuestion.tokens;
-            const spreadCoordinates = generateSpreadLayout(rawTokens.length, side);
+            let mapPositions = generateSpreadLayout(displayObjects.length, side, originalTokens);
 
-            let tokenObjects = rawTokens.map((token, originalIndex) => {
-                return {
-                    token: token,
-                    id: originalIndex,
-                    x: spreadCoordinates[originalIndex].x,
-                    y: spreadCoordinates[originalIndex].y
-                };
+            displayObjects.forEach((obj, idx) => {
+                const nodeCoords = mapPositions[idx];
+                const dotElement = document.createElement('div');
+                dotElement.classList.add('dot-node');
+                dotElement.id = `dot-${side}-${idx}`;
+                
+                dotElement.style.width = `${nodeCoords.size}px`;
+                dotElement.style.height = `${nodeCoords.size}px`;
+                dotElement.style.fontSize = nodeCoords.fontSize;
+                
+                dotElement.style.left = `${nodeCoords.x}px`;
+                dotElement.style.top = `${nodeCoords.y}px`;
+                dotElement.innerText = obj.text;
+                
+                dotElement.dataset.origIndex = obj.origIndex;
+                dotElement.dataset.arrayIndex = idx;
+                dotElement.dataset.text = obj.text;
+                dotElement.dataset.posX = nodeCoords.x;
+                dotElement.dataset.posY = nodeCoords.y;
+
+                dotElement.addEventListener('mousedown', (e) => handleInteractionStart(e, side, idx));
+                dotElement.addEventListener('touchstart', (e) => handleInteractionStart(e, side, idx), { passive: false });
+
+                container.appendChild(dotElement);
             });
 
-            let shuffledLayouts = [...tokenObjects].sort(() => Math.random() - 0.5);
-
-            shuffledLayouts.forEach((item) => {
-                const node = document.createElement('div');
-                node.className = 'dot-node';
-                node.id = `node-${side}-${item.id}`;
-                node.innerText = item.token;
-                node.style.left = `${item.x}%`;
-                node.style.top = `${item.y}%`;
-
-                node.dataset.itemId = item.id;
-                node.dataset.token = item.token;
-
-                node.addEventListener('mousedown', (e) => handleNodeSelectionStart(e, side, item.id));
-                node.addEventListener('touchstart', (e) => {
-                    if (e.changedTouches && e.changedTouches.length > 0) {
-                        handleNodeSelectionStart(e.changedTouches[0], side, item.id);
-                    }
-                }, {passive: true});
-
-                container.appendChild(node);
-            });
-
-            setTimeout(() => {
-                resizeCanvas(side);
-                drawCanvasVisuals(side);
-            }, 50);
+            drawCanvasVisuals(side);
         }
 
         /************************************************************************
-         * CONFETTI CELEBRATION PARTICLE ENGINE
+         * INTERACTION EVENTS & CANVAS VECTOR RENDER SYSTEM
          ************************************************************************/
-        function triggerConfettiExplosion(side) {
-            const canvas = document.getElementById(`confetti-${side}`);
+        function resizeCanvas(side) {
             const container = document.getElementById(`canvas-container-${side}`);
-            if(!canvas) return;
+            const canvas = document.getElementById(`canvas-${side}`);
+            const confetti = document.getElementById(`confetti-${side}`);
+            if (canvas && container) {
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+            }
+            if (confetti && container) {
+                confetti.width = container.clientWidth;
+                confetti.height = container.clientHeight;
+            }
+        }
 
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
+        function drawCanvasVisuals(side) {
+            const canvas = document.getElementById(`canvas-${side}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const sideState = state[side];
+            if (sideState.currentChain.length === 0) return;
+
+            ctx.beginPath();
+            sideState.currentChain.forEach((nodeIdx, step) => {
+                const element = document.getElementById(`dot-${side}-${nodeIdx}`);
+                if (element) {
+                    const x = parseFloat(element.dataset.posX);
+                    const y = parseFloat(element.dataset.posY);
+                    if (step === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+            });
+
+            ctx.lineWidth = 10; // Slightly thickened line to match larger circles
+            ctx.strokeStyle = "rgba(255, 183, 3, 0.9)"; 
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = 8;
+            ctx.stroke();
+            ctx.shadowBlur = 0; 
+
+            if (sideState.activeDrawing) {
+                const lastNodeElement = document.getElementById(`dot-${side}-${sideState.currentChain[sideState.currentChain.length - 1]}`);
+                if (lastNodeElement) {
+                    ctx.beginPath();
+                    ctx.moveTo(parseFloat(lastNodeElement.dataset.posX), parseFloat(lastNodeElement.dataset.posY));
+                    ctx.lineTo(sideState.lastMouseX, sideState.lastMouseY);
+                    ctx.lineWidth = 6;
+                    ctx.strokeStyle = "rgba(82, 183, 136, 0.75)";
+                    ctx.setLineDash([10, 10]);
+                    ctx.stroke();
+                    ctx.setLineDash([]); 
+                }
+            }
+        }
+
+        function handleInteractionStart(e, side, nodeIdx) {
+            if (e.type === 'touchstart') e.preventDefault();
+            AudioFX.init();
+
+            const sideState = state[side];
+            sideState.activeDrawing = true;
+            sideState.currentChain = [nodeIdx];
+
+            if (e.type === 'touchstart') {
+                sideState.activeTouchId = e.changedTouches[0].identifier;
+                updateCoordinatesRecord(e.changedTouches[0], side);
+            } else {
+                updateCoordinatesRecord(e, side);
+            }
+
+            refreshNodesHighlightingStyles(side);
+            updateBottomAnswerMirrorPreview(side);
+            drawCanvasVisuals(side);
+        }
+
+        function updateCoordinatesRecord(eventSource, side) {
+            const container = document.getElementById(`canvas-container-${side}`);
+            const rect = container.getBoundingClientRect();
+            state[side].lastMouseX = eventSource.clientX - rect.left;
+            state[side].lastMouseY = eventSource.clientY - rect.top;
+        }
+
+        function refreshNodesHighlightingStyles(side) {
+            const container = document.getElementById(`canvas-container-${side}`);
+            container.querySelectorAll('.dot-node').forEach(node => {
+                const arrIndex = parseInt(node.dataset.arrayIndex);
+                if (state[side].currentChain.includes(arrIndex)) {
+                    node.classList.add('selected');
+                } else {
+                    node.classList.remove('selected');
+                }
+            });
+        }
+
+        function updateBottomAnswerMirrorPreview(side) {
+            const sideState = state[side];
+            const currentQuestion = sideState.pool[sideState.index];
+            if (!currentQuestion) return;
+
+            let constructionSegments = sideState.currentChain.map(idx => {
+                const node = document.getElementById(`dot-${side}-${idx}`);
+                return node ? node.dataset.text : '';
+            });
+
+            let combinedString = (currentQuestion.type === "sentence") ? constructionSegments.join(" ") : constructionSegments.join("");
+            document.getElementById(`ans-box-${side}`).innerText = combinedString || "Connect dots to answer!";
+        }
+
+        function trackingMoveProcess(clientX, clientY, side) {
+            const sideState = state[side];
+            if (!sideState.activeDrawing) return;
+
+            const container = document.getElementById(`canvas-container-${side}`);
+            const rect = container.getBoundingClientRect();
+            const mouseX = clientX - rect.left;
+            const mouseY = clientY - rect.top;
+
+            sideState.lastMouseX = mouseX;
+            sideState.lastMouseY = mouseY;
+
+            const elements = container.querySelectorAll('.dot-node');
+            elements.forEach(node => {
+                const arrIdx = parseInt(node.dataset.arrayIndex);
+                const nX = parseFloat(node.dataset.posX);
+                const nY = parseFloat(node.dataset.posY);
+                const radius = node.clientWidth / 2;
+
+                // Hitbox expands to match large circles comfortably
+                if (Math.hypot(mouseX - nX, mouseY - nY) < radius + 20) {
+                    if (!sideState.currentChain.includes(arrIdx)) {
+                        sideState.currentChain.push(arrIdx);
+                        AudioFX.playTone(330 + (sideState.currentChain.length * 40), 'sine', 0.08, 0, 0.8);
+                        refreshNodesHighlightingStyles(side);
+                        updateBottomAnswerMirrorPreview(side);
+                    }
+                }
+            });
+
+            drawCanvasVisuals(side);
+        }
+
+        function closeInteractionSequence(side) {
+            const sideState = state[side];
+            if (!sideState.activeDrawing) return;
+            sideState.activeDrawing = false;
+            sideState.activeTouchId = null;
+            drawCanvasVisuals(side);
+        }
+
+        /************************************************************************
+         * CRITICAL GAME MECHANICS VALUATION PARSER
+         ************************************************************************/
+        function evaluateSubmittedSequence(side) {
+            const sideState = state[side];
+            const currentQuestion = sideState.pool[sideState.index];
+            if (!currentQuestion) return;
+
+            let stringOutput = sideState.currentChain.map(idx => {
+                const node = document.getElementById(`dot-${side}-${idx}`);
+                return node ? node.dataset.text : '';
+            });
+
+            let formedText = (currentQuestion.type === "sentence") ? stringOutput.join(" ") : stringOutput.join("");
+            let targetAnswer = currentQuestion.answer;
+
+            const panelOverlay = document.getElementById(`feedback-${side}`);
+            const headingText = panelOverlay.querySelector('.feedback-text');
+            const contextualDescription = document.getElementById(`feedback-sub-${side}`);
+            const skipButton = document.getElementById(`btn-feedback-next-${side}`);
+            const loopResetButton = document.getElementById(`btn-replay-${side}`);
+
+            if (formedText === targetAnswer) {
+                AudioFX.success();
+                sideState.score++;
+                document.getElementById(`score-${side}`).innerText = `Score: ${sideState.score} / ${sideState.pool.length}`;
+
+                headingText.innerHTML = "<span>🌴</span><span>Magnificent Score!</span><span>🌴</span>";
+                headingText.className = "feedback-text feedback-success";
+                contextualDescription.innerHTML = `Excellent work! Your sequence correctly matches:<br><strong style="font-size:28px; color:var(--gold);">'${targetAnswer}'</strong>`;
+                
+                panelOverlay.classList.add('active');
+                triggerConfettiExplosion(side);
+
+                if (sideState.index >= sideState.pool.length - 1) {
+                    AudioFX.victory();
+                    contextualDescription.innerHTML += `<br><br><span style="color:#ffb703; font-size:24px;">🎉 Perfect Run Completed! Great Job Player! 🎉</span>`;
+                    skipButton.style.display = "none";
+                    loopResetButton.style.display = "inline-block";
+                } else {
+                    skipButton.style.display = "inline-block";
+                    loopResetButton.style.display = "none";
+                }
+
+            } else {
+                AudioFX.fail();
+                if(sideState.score > 0) {
+                    sideState.score--;
+                }
+                document.getElementById(`score-${side}`).innerText = `Score: ${sideState.score} / ${sideState.pool.length}`;
+
+                headingText.innerHTML = "<span>❌</span><span>Try Again!</span><span>❌</span>";
+                headingText.className = "feedback-text feedback-fail";
+                contextualDescription.innerHTML = `Oh no! That order sequence doesn't match perfectly.<br>Your current team score has dropped by <span style="color:#e74c3c;">-1</span> point!<br><br><small style="color:#aaa;">Tip: Clear paths and examine your trace sequences steps coordinates carefully.</small>`;
+                
+                panelOverlay.classList.add('active');
+                skipButton.style.display = "inline-block";
+                skipButton.innerText = "Review Strategy";
+                skipButton.onclick = () => {
+                    panelOverlay.classList.remove('active');
+                };
+                loopResetButton.style.display = "none";
+            }
+        }
+
+        /************************************************************************
+         * CELEBRATION VISUAL CONFETTI PARTICLES SIMULATION ANIMATOR SYSTEM
+         ************************************************************************/
+        function triggerConfettiExplosion(side) {
+            const sideState = state[side];
+            const canvas = document.getElementById(`confetti-${side}`);
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+
             sideState.confettiParticles = [];
             sideState.confettiActive = true;
 
-            const colors = ['#ffb703', '#fb8500', '#52b788', '#2d6a4f', '#2ecc71', '#e74c3c', '#9b59b6', '#3498db'];
-
-            for (let i = 0; i < 120; i++) {
+            for(let i=0; i<85; i++) {
                 sideState.confettiParticles.push({
                     x: canvas.width / 2,
-                    y: canvas.height - 20,
-                    size: Math.random() * 8 + 6,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    speedX: (Math.random() - 0.5) * 15,
-                    speedY: -(Math.random() * 12 + 10),
-                    gravity: 0.3,
+                    y: canvas.height / 1.5,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() * -12) - 5,
+                    size: Math.random() * 8 + 5,
+                    color: `hsl(${Math.random() * 360}, 90%, 60%)`,
                     rotation: Math.random() * 360,
                     rotationSpeed: (Math.random() - 0.5) * 10
                 });
             }
 
-            function updateConfettiFrame() {
-                if (!sideState.confettiActive) return;
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            function frameLoop() {
+                if(!sideState.confettiActive) return;
+                ctx.clearRect(0,0, canvas.width, canvas.height);
 
-                let activeParticles = false;
-
+                let livingParticlesCount = 0;
                 sideState.confettiParticles.forEach(p => {
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                    p.speedY += p.gravity;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.38; 
+                    p.vx *= 0.98; 
                     p.rotation += p.rotationSpeed;
 
-                    if (p.y < canvas.height && p.x > 0 && p.x < canvas.width) {
-                        activeParticles = true;
+                    if(p.y <= canvas.height) {
+                        livingParticlesCount++;
                         ctx.save();
                         ctx.translate(p.x, p.y);
                         ctx.rotate(p.rotation * Math.PI / 180);
                         ctx.fillStyle = p.color;
-                        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
                         ctx.restore();
                     }
                 });
 
-                if (activeParticles) {
-                    requestAnimationFrame(updateConfettiFrame);
+                if(livingParticlesCount > 0) {
+                    requestAnimationFrame(frameLoop);
                 } else {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    sideState.confettiActive = false;
                 }
             }
-
-            requestAnimationFrame(updateConfettiFrame);
+            frameLoop();
         }
 
         function stopConfettiAnimation(side) {
             state[side].confettiActive = false;
             const canvas = document.getElementById(`confetti-${side}`);
-            if (canvas) {
+            if(canvas) {
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         }
 
         /************************************************************************
-         * COPY-PASTE PICTURE OPTIMIZATION COMPRESSION PIPELINE
+         * CORE INTERACTION DELEGATORS EVENT INITIALIZERS MAPPINGS
          ************************************************************************/
+        function initDOMEvents() {
+            window.addEventListener('mousemove', (e) => {
+                trackingMoveProcess(e.clientX, e.clientY, 'left');
+                trackingMoveProcess(e.clientX, e.clientY, 'right');
+            });
+            window.addEventListener('mouseup', () => {
+                closeInteractionSequence('left');
+                closeInteractionSequence('right');
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                Array.from(e.touches).forEach(t => {
+                    if (state.left.activeDrawing && t.identifier === state.left.activeTouchId) {
+                        trackingMoveProcess(t.clientX, t.clientY, 'left');
+                    }
+                    if (state.right.activeDrawing && t.identifier === state.right.activeTouchId) {
+                        trackingMoveProcess(t.clientX, t.clientY, 'right');
+                    }
+                });
+            }, { passive: false });
+
+            window.addEventListener('touchend', (e) => {
+                Array.from(e.changedTouches).forEach(t => {
+                    if (t.identifier === state.left.activeTouchId) closeInteractionSequence('left');
+                    if (t.identifier === state.right.activeTouchId) closeInteractionSequence('right');
+                });
+            });
+
+            document.getElementById('btn-check-left').addEventListener('click', () => evaluateSubmittedSequence('left'));
+            document.getElementById('btn-check-right').addEventListener('click', () => evaluateSubmittedSequence('right'));
+
+            document.getElementById('btn-reset-left').addEventListener('click', () => {
+                state.left.currentChain = [];
+                refreshNodesHighlightingStyles('left');
+                updateBottomAnswerMirrorPreview('left');
+                drawCanvasVisuals('left');
+            });
+            document.getElementById('btn-reset-right').addEventListener('click', () => {
+                state.right.currentChain = [];
+                refreshNodesHighlightingStyles('right');
+                updateBottomAnswerMirrorPreview('right');
+                drawCanvasVisuals('right');
+            });
+
+            document.getElementById('btn-feedback-next-left').addEventListener('click', () => progressionForwardTriggerStep('left'));
+            document.getElementById('btn-feedback-next-right').addEventListener('click', () => progressionForwardTriggerStep('right'));
+
+            document.getElementById('btn-replay-left').addEventListener('click', () => resetSingleTeamSession('left'));
+            document.getElementById('btn-replay-right').addEventListener('click', () => resetSingleTeamSession('right'));
+
+            document.getElementById('btn-toggle-mode').addEventListener('click', () => {
+                isTeamMode = !isTeamMode;
+                rebuildGameSession();
+            });
+
+            document.getElementById('btn-intro-start').addEventListener('click', () => {
+                document.getElementById('welcome-screen').classList.remove('active');
+                document.getElementById('rules-screen').classList.add('active');
+            });
+            document.getElementById('btn-close-rules').addEventListener('click', () => {
+                document.getElementById('rules-screen').classList.remove('active');
+            });
+
+            document.getElementById('btn-blog-redirect').addEventListener('click', () => {
+                window.open('https://teacherkhenlearninghub.blogspot.com', '_blank');
+            });
+
+            const settingsView = document.getElementById('settings-panel');
+            document.getElementById('btn-open-settings').addEventListener('click', () => { settingsView.style.display = 'block'; });
+            document.getElementById('btn-close-settings').addEventListener('click', () => { 
+                settingsView.style.display = 'none'; 
+                rebuildGameSession();
+            });
+
+            document.getElementById('btn-add-question').addEventListener('click', processDashboardInsertionAction);
+            document.getElementById('sync-toggle').addEventListener('change', (e) => {
+                syncQuestions = e.target.checked;
+                savePoolToStorage();
+            });
+
+            document.getElementById('btn-export-data').addEventListener('click', processJSONExportSystemAction);
+            document.getElementById('btn-import-trigger').addEventListener('click', () => document.getElementById('file-import-input').click());
+            document.getElementById('file-import-input').addEventListener('change', processJSONImportSystemAction);
+            document.getElementById('btn-clear-system').addEventListener('click', triggerFactoryHardResetAction);
+
+            audioBtn.addEventListener('click', () => {
+                if(audioEl.paused) {
+                    audioEl.play().catch(e => console.log("Audio playback blocked."));
+                    audioBtn.innerText = "🎵 Music: ON";
+                } else {
+                    audioEl.pause();
+                    audioBtn.innerText = "🎵 Music: OFF";
+                }
+            });
+            volSlider.addEventListener('input', (e) => {
+                audioEl.volume = e.target.value;
+                victoryAudioEl.volume = e.target.value;
+            });
+        }
+
+        function progressionForwardTriggerStep(side) {
+            document.getElementById(`feedback-${side}`).classList.remove('active');
+            stopConfettiAnimation(side);
+            
+            if(state[side].currentChain.length > 0) {
+                const currentQuestion = state[side].pool[state[side].index];
+                let stringOutput = state[side].currentChain.map(idx => document.getElementById(`dot-${side}-${idx}`).dataset.text);
+                let formedText = (currentQuestion.type === "sentence") ? stringOutput.join(" ") : stringOutput.join("");
+                if (formedText !== currentQuestion.answer) {
+                    return; 
+                }
+            }
+
+            state[side].index++;
+            setupChallengeRound(side);
+        }
+
+        /************************************************************************
+         * TEACHER ADMINISTRATIVE DATA ARCHITECTURE HOOKS SYSTEMS
+         ************************************************************************/
+        function renderSettingsUI() {
+            const container = document.getElementById('settings-questions-container');
+            document.getElementById('pool-count-label').innerText = questionPool.length;
+            container.innerHTML = '';
+
+            questionPool.forEach((q, idx) => {
+                const row = document.createElement('div');
+                row.classList.add('question-list-item');
+                row.innerHTML = `
+                    <div>
+                        <strong style="color:var(--gold);">[${q.type.toUpperCase()}]</strong> 
+                        <span>${q.answer}</span>
+                        ${q.image ? '<span style="color:var(--light-green); margin-left:8px;">🖼️ (Image Attached)</span>' : ''}
+                    </div>
+                    <button class="jungle-btn btn-sm" style="background:#rgba(0,0,0,0.4); border-color:#d63031; padding:4px 10px; color:#ff7675;" onclick="deleteChallengeElementByIndex(${idx})">Remove</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        window.deleteChallengeElementByIndex = function(idx) {
+            questionPool.splice(idx, 1);
+            savePoolToStorage();
+        };
+
         function setupPasteFeature() {
             const pasteZone = document.getElementById('image-paste-zone');
             
             pasteZone.addEventListener('paste', (e) => {
-                const clipboardItems = e.clipboardData.items;
-                for (let i = 0; i < clipboardItems.length; i++) {
-                    if (clipboardItems[i].type.indexOf('image') !== -1) {
-                        const blob = clipboardItems[i].getAsFile();
+                const items = e.clipboardData.items;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        const blob = items[i].getAsFile();
                         const reader = new FileReader();
-                        
                         reader.onload = function(event) {
-                            compressImagePipeline(event.target.result, 200, (compressedBase64) => {
-                                currentUploadedImageBase64 = compressedBase64;
-                                pasteZone.innerHTML = `<img src="${compressedBase64}" alt="Clue thumbnail">`;
-                                pasteZone.style.borderColor = "var(--gold)";
-                            });
+                            currentUploadedImageBase64 = event.target.result;
+                            pasteZone.innerHTML = `<img src="${currentUploadedImageBase64}" alt="Paste preview snapshot">`;
                         };
                         reader.readAsDataURL(blob);
                         e.preventDefault();
@@ -1027,510 +1391,79 @@
             });
         }
 
-        function compressImagePipeline(base64Str, maxSize, callback) {
-            const img = new Image();
-            img.src = base64Str;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
+        function processDashboardInsertionAction() {
+            const typeValue = document.getElementById('input-type').value;
+            const contentText = document.getElementById('input-content').value.trim();
 
-                if (width > height) {
-                    if (width > maxSize) {
-                        height *= maxSize / width;
-                        width = maxSize;
-                    }
-                } else {
-                    if (height > maxSize) {
-                        width *= maxSize / height;
-                        height = maxSize;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', 0.7)); 
-            };
-        }
-
-        /************************************************************************
-         * CANVAS DIMENSION & DRAWING OPERATIONS (VINE GENERATOR GRAPHICS)
-         ************************************************************************/
-        function resizeCanvas(side) {
-            const canvas = document.getElementById(`canvas-${side}`);
-            if(!canvas) return;
-            const container = document.getElementById(`canvas-container-${side}`);
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-        }
-
-        function drawCanvasVisuals(side) {
-            const canvas = document.getElementById(`canvas-${side}`);
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const container = document.getElementById(`canvas-container-${side}`);
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const sideState = state[side];
-            if(!sideState || sideState.currentChain.length === 0) return;
-
-            ctx.lineWidth = 8; 
-            ctx.strokeStyle = '#2d6a4f';
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            ctx.shadowColor = 'rgba(0,0,0,0.4)';
-            ctx.shadowBlur = 4;
-            ctx.shadowOffsetY = 3;
-
-            ctx.beginPath();
-            
-            sideState.currentChain.forEach((nodeId, index) => {
-                const element = document.getElementById(`node-${side}-${nodeId}`);
-                if(element) {
-                    const rect = element.getBoundingClientRect();
-                    const containerRect = container.getBoundingClientRect();
-                    
-                    const x = (rect.left + rect.width / 2) - containerRect.left;
-                    const y = (rect.top + rect.height / 2) - containerRect.top;
-
-                    if(index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-            });
-
-            if(sideState.activeDrawing && sideState.currentChain.length > 0) {
-                ctx.lineTo(sideState.lastMouseX, sideState.lastMouseY);
-            }
-
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#52b788';
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetY = 0;
-
-            sideState.currentChain.forEach((nodeId, index) => {
-                const element = document.getElementById(`node-${side}-${nodeId}`);
-                if(element) {
-                    const rect = element.getBoundingClientRect();
-                    const containerRect = container.getBoundingClientRect();
-                    const x = (rect.left + rect.width / 2) - containerRect.left;
-                    const y = (rect.top + rect.height / 2) - containerRect.top;
-
-                    if(index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-            });
-            if(sideState.activeDrawing && sideState.currentChain.length > 0) {
-                ctx.lineTo(sideState.lastMouseX, sideState.lastMouseY);
-            }
-            ctx.stroke();
-        }
-
-        /************************************************************************
-         * INDEPENDENT HIGH-SPEED MULTI-TOUCH COUPLING GAME MECHANICS
-         ************************************************************************/
-        function handleNodeSelectionStart(pointerData, side, itemId) {
-            const sideState = state[side];
-            
-            if (pointerData.identifier !== undefined) {
-                sideState.activeTouchId = pointerData.identifier;
-            } else {
-                sideState.activeTouchId = 'mouse';
-            }
-
-            sideState.currentChain = [itemId];
-            
-            const container = document.getElementById(`canvas-container-${side}`);
-            container.querySelectorAll('.dot-node').forEach(node => node.classList.remove('selected'));
-            document.getElementById(`node-${side}-${itemId}`).classList.add('selected');
-            
-            sideState.activeDrawing = true;
-
-            trackPointerMovementCoordinates(pointerData, side);
-            updateAnswerPreviewDisplay(side);
-            drawCanvasVisuals(side);
-        }
-
-        function trackPointerMovementCoordinates(pointerData, side) {
-            const container = document.getElementById(`canvas-container-${side}`);
-            const rect = container.getBoundingClientRect();
-            state[side].lastMouseX = pointerData.clientX - rect.left;
-            state[side].lastMouseY = pointerData.clientY - rect.top;
-        }
-
-        function processPointerMoveInput(pointerData, side) {
-            const sideState = state[side];
-            if (!sideState.activeDrawing) return;
-
-            if (pointerData.identifier !== undefined && sideState.activeTouchId !== pointerData.identifier) return;
-            if (pointerData.identifier === undefined && sideState.activeTouchId !== 'mouse') return;
-
-            trackPointerMovementCoordinates(pointerData, side);
-
-            const currentQuestion = sideState.pool[sideState.index];
-            if (!currentQuestion) return;
-
-            currentQuestion.tokens.forEach((_, tokenId) => {
-                if (sideState.currentChain.includes(tokenId)) return;
-
-                const element = document.getElementById(`node-${side}-${tokenId}`);
-                if (!element) return;
-
-                const nodeRect = element.getBoundingClientRect();
-                const radius = nodeRect.width / 2;
-                const nodeCenterX = nodeRect.left + radius;
-                const nodeCenterY = nodeRect.top + radius;
-
-                const distance = Math.hypot(pointerData.clientX - nodeCenterX, pointerData.clientY - nodeCenterY);
-
-                if (distance < radius + 10) { 
-                    sideState.currentChain.push(tokenId);
-                    element.classList.add('selected');
-                    updateAnswerPreviewDisplay(side);
-                    AudioFX.playTone(380, 'sine', 0.05, 0, 0.8);
-                }
-            });
-
-            drawCanvasVisuals(side);
-        }
-
-        function processPointerReleaseInput(pointerId, side) {
-            const sideState = state[side];
-            if (!sideState.activeDrawing) return;
-
-            if (pointerId !== undefined && sideState.activeTouchId !== pointerId) return;
-            if (pointerId === undefined && sideState.activeTouchId !== 'mouse') return;
-
-            sideState.activeDrawing = false;
-            sideState.activeTouchId = null;
-            drawCanvasVisuals(side);
-        }
-
-        function updateAnswerPreviewDisplay(side) {
-            const sideState = state[side];
-            const currentQuestion = sideState.pool[sideState.index];
-            if(!currentQuestion) return;
-
-            let outputTokens = sideState.currentChain.map(id => {
-                return currentQuestion.tokens[id];
-            });
-
-            const separator = (currentQuestion.type === 'sentence') ? ' ' : '';
-            const builtString = outputTokens.join(separator);
-            
-            document.getElementById(`ans-box-${side}`).innerText = builtString || "Connect dots to answer!";
-        }
-
-        /************************************************************************
-         * GLOBAL INPUT EVENT PIPELINE ATTACHMENTS MANAGER
-         ************************************************************************/
-        function initDOMEvents() {
-            document.getElementById('btn-intro-start').addEventListener('click', () => {
-                document.getElementById('welcome-screen').classList.remove('active');
-                document.getElementById('rules-screen').classList.add('active'); 
-                
-                if(audioEl.paused) {
-                    audioEl.volume = volSlider.value;
-                    audioEl.play().then(() => {
-                        audioBtn.innerText = "🎵 Music: ON";
-                        audioBtn.style.background = "linear-gradient(to bottom, #2ecc71, #27ae60)";
-                    }).catch(() => {});
-                }
-            });
-
-            document.getElementById('btn-blog-redirect').addEventListener('click', () => {
-                window.open('https://teacherkhenlearninghub.blogspot.com/search/label/HTML-CODED%20IMs?&max-results=5', '_blank');
-            });
-
-            document.getElementById('btn-close-rules').addEventListener('click', () => {
-                document.getElementById('rules-screen').classList.remove('active');
-            });
-
-            // MOUSE EVENTS (Traditional fallback controls)
-            window.addEventListener('mousemove', (e) => {
-                processPointerMoveInput(e, 'left');
-                if(isTeamMode) processPointerMoveInput(e, 'right');
-            });
-            window.addEventListener('mouseup', (e) => {
-                processPointerReleaseInput(undefined, 'left');
-                processPointerReleaseInput(undefined, 'right');
-            });
-
-            // TV MULTI-TOUCH POINTER HOOKS
-            window.addEventListener('touchmove', (e) => {
-                for (let i = 0; i < e.changedTouches.length; i++) {
-                    processPointerMoveInput(e.changedTouches[i], 'left');
-                    if(isTeamMode) processPointerMoveInput(e.changedTouches[i], 'right');
-                }
-            }, {passive: false});
-
-            window.addEventListener('touchend', (e) => {
-                for (let i = 0; i < e.changedTouches.length; i++) {
-                    processPointerReleaseInput(e.changedTouches[i].identifier, 'left');
-                    processPointerReleaseInput(e.changedTouches[i].identifier, 'right');
-                }
-            });
-            window.addEventListener('touchcancel', (e) => {
-                for (let i = 0; i < e.changedTouches.length; i++) {
-                    processPointerReleaseInput(e.changedTouches[i].identifier, 'left');
-                    processPointerReleaseInput(e.changedTouches[i].identifier, 'right');
-                }
-            });
-
-            /* * CRITICAL FIX: HIGH-SPEED MULTI-TOUCH BUTTON HANDLERS
-             * Bypassing regular 'click' actions and explicitly binding onto both 'touchstart' and 'mousedown' 
-             * with e.preventDefault() to guarantee that buttons fire cleanly and instantly on both sides simultaneously.
-             */
-            ['left', 'right'].forEach(side => {
-                const checkBtn = document.getElementById(`btn-check-${side}`);
-                const resetBtn = document.getElementById(`btn-reset-${side}`);
-                const nextBtn = document.getElementById(`btn-feedback-next-${side}`);
-                const replayBtn = document.getElementById(`btn-replay-${side}`);
-
-                // Action execution wrapper mappings
-                const triggerCheck = (e) => { e.preventDefault(); e.stopPropagation(); evaluateCurrentSubmission(side); };
-                const triggerReset = (e) => { e.preventDefault(); e.stopPropagation(); clearCurrentPaths(side); };
-                const triggerNext  = (e) => { e.preventDefault(); e.stopPropagation(); document.getElementById(`feedback-${side}`).classList.remove('active'); setupChallengeRound(side); };
-                const triggerReplay = (e) => { e.preventDefault(); e.stopPropagation(); resetSingleTeamSession(side); };
-
-                // Bind Check Button
-                checkBtn.addEventListener('touchstart', triggerCheck, {passive: false});
-                checkBtn.addEventListener('mousedown', triggerCheck);
-
-                // Bind Reset Button
-                resetBtn.addEventListener('touchstart', triggerReset, {passive: false});
-                resetBtn.addEventListener('mousedown', triggerReset);
-
-                // Bind Next Button (Inside Overlay Card)
-                nextBtn.addEventListener('touchstart', triggerNext, {passive: false});
-                nextBtn.addEventListener('mousedown', triggerNext);
-
-                // Bind Replay Button (Inside Overlay Card)
-                replayBtn.addEventListener('touchstart', triggerReplay, {passive: false});
-                replayBtn.addEventListener('mousedown', triggerReplay);
-            });
-
-            document.getElementById('btn-toggle-mode').addEventListener('click', () => {
-                isTeamMode = !isTeamMode;
-                rebuildGameSession();
-            });
-
-            document.getElementById('btn-open-settings').addEventListener('click', () => {
-                document.getElementById('settings-panel').style.display = 'block';
-            });
-
-            document.getElementById('btn-close-settings').addEventListener('click', () => {
-                syncQuestions = document.getElementById('sync-toggle').checked;
-                savePoolToStorage();
-                document.getElementById('settings-panel').style.display = 'none';
-                rebuildGameSession();
-            });
-
-            document.getElementById('btn-add-question').addEventListener('click', executeAppendQuestionAction);
-            document.getElementById('btn-clear-system').addEventListener('click', executeSystemResetAction);
-            document.getElementById('btn-export-data').addEventListener('click', exportPoolDataJSON);
-            
-            const fileInput = document.getElementById('file-import-input');
-            document.getElementById('btn-import-trigger').addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', handleFileImportEvent);
-
-            audioBtn.addEventListener('click', () => {
-                if(audioEl.paused) {
-                    audioEl.play().then(() => {
-                        audioBtn.innerText = "🎵 Music: ON";
-                        audioBtn.style.background = "linear-gradient(to bottom, #2ecc71, #27ae60)";
-                    }).catch(() => {});
-                } else {
-                    audioEl.pause();
-                    audioBtn.innerText = "🎵 Music: OFF";
-                    audioBtn.style.background = "linear-gradient(to bottom, var(--wood-brown), #5c3a21)";
-                }
-            });
-
-            volSlider.addEventListener('input', (e) => {
-                audioEl.volume = e.target.value;
-            });
-        }
-
-        /************************************************************************
-         * EVALUATION ENGINE & INTERACTIVE ANSWER CHECKER MECHANICS LOGIC
-         ************************************************************************/
-        function clearCurrentPaths(side) {
-            const sideState = state[side];
-            sideState.currentChain = [];
-            sideState.activeDrawing = false;
-            sideState.activeTouchId = null;
-            
-            const container = document.getElementById(`canvas-container-${side}`);
-            container.querySelectorAll('.dot-node').forEach(node => node.classList.remove('selected'));
-            
-            updateAnswerPreviewDisplay(side);
-            drawCanvasVisuals(side);
-        }
-
-        function evaluateCurrentSubmission(side) {
-            const sideState = state[side];
-            const currentQuestion = sideState.pool[sideState.index];
-            if(!currentQuestion) return;
-
-            const separator = (currentQuestion.type === 'sentence') ? ' ' : '';
-            let userSubmission = sideState.currentChain.map(id => currentQuestion.tokens[id]).join(separator);
-
-            const sanitizedUser = userSubmission.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-            const sanitizedTarget = currentQuestion.answer.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-
-            const isCorrect = (sanitizedUser === sanitizedTarget) && (sideState.currentChain.length === currentQuestion.tokens.length);
-
-            const overlay = document.getElementById(`feedback-${side}`);
-            const textEl = document.getElementById(`feedback-text-${side}`);
-            const subEl = document.getElementById(`feedback-sub-${side}`);
-            const nextBtn = document.getElementById(`btn-feedback-next-${side}`);
-
-            if(isCorrect) {
-                AudioFX.success();
-                sideState.score++; 
-                sideState.index++;
-                
-                textEl.innerText = "🎉 WELL DONE!";
-                textEl.className = "feedback-text feedback-success";
-                subEl.innerHTML = `"${currentQuestion.answer}" is completely correct!<br><span style="color:var(--gold); font-weight:bold;">+1 Point Earned!</span>`;
-                nextBtn.innerText = "Continue Voyage";
-            } else {
-                AudioFX.fail();
-                
-                sideState.score--;
-                if(sideState.score < 0) sideState.score = 0; 
-                
-                textEl.innerText = "❌ TRY AGAIN!";
-                textEl.className = "feedback-text feedback-fail";
-                subEl.innerHTML = `Expected Order: "${currentQuestion.answer}"<br><span style="color:#ff7675; font-weight:bold;">Incorrect submission check: -1 Point!</span>`;
-                nextBtn.innerText = "Retry Challenge";
-                
-                clearCurrentPaths(side);
-            }
-
-            document.getElementById(`score-${side}`).innerText = `Score: ${sideState.score}`;
-            overlay.classList.add('active');
-        }
-
-        /************************************************************************
-         * TEACHER SETTINGS MODAL CONTROL SYSTEM OPERATIONS MANAGEMENT
-         ************************************************************************/
-        function renderSettingsUI() {
-            const container = document.getElementById('settings-questions-container');
-            container.innerHTML = '';
-            document.getElementById('pool-count-label').innerText = questionPool.length;
-
-            questionPool.forEach((q, idx) => {
-                const row = document.createElement('div');
-                row.className = 'question-list-item';
-                let imgThumbHtml = q.image ? `<img src="${q.image}" style="max-height:35px; border-radius:4px; margin-right:8px; vertical-align:middle;">` : '';
-                
-                row.innerHTML = `
-                    <div>
-                        ${imgThumbHtml}
-                        <strong>[${q.type.toUpperCase()}]</strong> ${q.answer}
-                        <br><small style="color:#2ecc71;">Tokens: ${JSON.stringify(q.tokens)}</small>
-                    </div>
-                    <button class="jungle-btn btn-sm" style="background:#e74c3c; border-color:#c0392b; box-shadow:0 2px 0 #c0392b;" onclick="deleteQuestionItemByIndex(${idx})">Delete</button>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        function executeAppendQuestionAction() {
-            const type = document.getElementById('input-type').value;
-            let rawContent = document.getElementById('input-content').value;
-            rawContent = rawContent.replace(/\s+/g, ' ').trim();
-
-            if(!rawContent) {
-                alert("Please input context parameters to append!");
+            if(!contentText) {
+                alert("Please add content item strings text input data!");
                 return;
             }
 
-            let tokens = [];
-            let answer = rawContent;
-
-            if(type === 'sentence') {
-                tokens = rawContent.split(' ').filter(t => t.length > 0);
+            let generatedTokensArray = [];
+            if(typeValue === 'sentence') {
+                generatedTokensArray = contentText.split(/\s+/);
             } else {
-                const cleanWord = rawContent.replace(/\s+/g, '');
-                tokens = cleanWord.split('');
-                answer = cleanWord;
+                generatedTokensArray = Array.from(contentText);
             }
 
-            const newQuestion = {
-                id: Date.now() + Math.random(),
-                type: type,
-                tokens: tokens,
-                answer: answer,
-                image: currentUploadedImageBase64 
+            const payload = {
+                id: Date.now(),
+                type: typeValue,
+                tokens: generatedTokensArray,
+                answer: contentText,
+                image: currentUploadedImageBase64
             };
 
-            questionPool.push(newQuestion);
-            document.getElementById('input-content').value = '';
-            
-            const pasteZone = document.getElementById('image-paste-zone');
-            pasteZone.innerHTML = "Click here & paste your photo (Ctrl+V)";
-            pasteZone.style.borderColor = "var(--light-green)";
-            currentUploadedImageBase64 = "";
-
+            questionPool.push(payload);
             savePoolToStorage();
+
+            document.getElementById('input-content').value = '';
+            document.getElementById('image-paste-zone').innerHTML = `Click here & paste your photo (Ctrl+V)`;
+            currentUploadedImageBase64 = "";
         }
 
-        window.deleteQuestionItemByIndex = function(index) {
-            questionPool.splice(index, 1);
-            savePoolToStorage();
-        };
+        function processJSONExportSystemAction() {
+            const outString = JSON.stringify(questionPool, null, 2);
+            const dataBlob = new Blob([outString], {type: "application/json"});
+            const downloadUrlUrl = URL.createObjectURL(dataBlob);
+            
+            const hookAnchor = document.createElement('a');
+            hookAnchor.href = downloadUrlUrl;
+            hookAnchor.download = `jungle_connect_configuration_pool_${Date.now()}.json`;
+            hookAnchor.click();
+            URL.revokeObjectURL(downloadUrlUrl);
+        }
 
-        function executeSystemResetAction() {
-            if(confirm("Confirm structural purge? This resets configuration settings parameters to factory profiles definitions!")) {
+        function processJSONImportSystemAction(e) {
+            const targetFile = e.target.files[0];
+            if(!targetFile) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const parsedStructure = JSON.parse(evt.target.result);
+                    if(Array.isArray(parsedStructure)) {
+                        questionPool = parsedStructure;
+                        savePoolToStorage();
+                        alert("Database configuration profile parsed and imported successfully!");
+                    } else {
+                        alert("Invalid challenge data schema architecture file formatting format configuration layout.");
+                    }
+                } catch(err) {
+                    alert("Error parsing system asset metrics file profiles logs components.");
+                }
+            };
+            reader.readAsText(targetFile);
+        }
+
+        function triggerFactoryHardResetAction() {
+            if(confirm("Are you absolutely sure you want to completely erase the current question pool and restore original factory defaults?")) {
                 localStorage.removeItem("jungle_game_pool");
                 questionPool = [...DEFAULT_QUESTIONS];
                 savePoolToStorage();
                 rebuildGameSession();
             }
-        }
-
-        function exportPoolDataJSON() {
-            const outputString = JSON.stringify(questionPool, null, 2);
-            const dataBlob = new Blob([outputString], { type: 'application/json' });
-            const temporaryAnchor = document.createElement('a');
-            temporaryAnchor.href = URL.createObjectURL(dataBlob);
-            temporaryAnchor.download = `jungle_game_pool_${Date.now()}.json`;
-            temporaryAnchor.click();
-            URL.revokeObjectURL(temporaryAnchor.href);
-        }
-
-        function handleFileImportEvent(e) {
-            const TargetFile = e.target.files[0];
-            if(!TargetFile) return;
-
-            const readerInstance = new FileReader();
-            readerInstance.onload = function(event) {
-                try {
-                    const compiledData = JSON.parse(event.target.result);
-                    if(Array.isArray(compiledData)) {
-                        questionPool = compiledData;
-                        savePoolToStorage();
-                        alert("Configuration pool data structure parsed and synchronized successfully!");
-                    }
-                } catch(error) {
-                    alert("Failure parsing validation target matrix records.");
-                }
-            };
-            readerInstance.readAsText(TargetFile);
         }
     </script>
 </body>
