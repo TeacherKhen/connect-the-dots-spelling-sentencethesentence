@@ -1251,6 +1251,10 @@
             const checkRight = document.getElementById('btn-check-right');
             const resetLeft = document.getElementById('btn-reset-left');
             const resetRight = document.getElementById('btn-reset-right');
+            const nextLeft = document.getElementById('btn-feedback-next-left');
+            const nextRight = document.getElementById('btn-feedback-next-right');
+            const replayLeft = document.getElementById('btn-replay-left');
+            const replayRight = document.getElementById('btn-replay-right');
 
             // Explicit Touch Listeners to bypass TV focus locking
             checkLeft.addEventListener('click', () => evaluateSubmittedSequence('left'));
@@ -1287,11 +1291,18 @@
                 drawCanvasVisuals('right');
             });
 
-            document.getElementById('btn-feedback-next-left').addEventListener('click', () => progressionForwardTriggerStep('left'));
-            document.getElementById('btn-feedback-next-right').addEventListener('click', () => progressionForwardTriggerStep('right'));
+            // Added Explicit Touch Propagation support for Next Challenge & Replay UI overlays
+            nextLeft.addEventListener('click', () => progressionForwardTriggerStep('left'));
+            nextLeft.addEventListener('touchstart', (e) => { e.stopPropagation(); progressionForwardTriggerStep('left'); });
 
-            document.getElementById('btn-replay-left').addEventListener('click', () => resetSingleTeamSession('left'));
-            document.getElementById('btn-replay-right').addEventListener('click', () => resetSingleTeamSession('right'));
+            nextRight.addEventListener('click', () => progressionForwardTriggerStep('right'));
+            nextRight.addEventListener('touchstart', (e) => { e.stopPropagation(); progressionForwardTriggerStep('right'); });
+
+            replayLeft.addEventListener('click', () => resetSingleTeamSession('left'));
+            replayLeft.addEventListener('touchstart', (e) => { e.stopPropagation(); resetSingleTeamSession('left'); });
+
+            replayRight.addEventListener('click', () => resetSingleTeamSession('right'));
+            replayRight.addEventListener('touchstart', (e) => { e.stopPropagation(); resetSingleTeamSession('right'); });
 
             document.getElementById('btn-toggle-mode').addEventListener('click', () => {
                 isTeamMode = !isTeamMode;
