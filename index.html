@@ -230,8 +230,6 @@
         /* Enriched Circle Node Elements */
         .dot-node {
             position: absolute;
-            width: 145px; 
-            height: 145px; 
             border-radius: 50%;
             background: radial-gradient(circle, #ffeaa7, #fdcb6e);
             border: 6px solid var(--wood-brown);
@@ -240,18 +238,16 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 32px; 
             color: #2d3436;
             cursor: pointer;
             z-index: 3;
             transform: translate(-50%, -50%);
             transition: transform 0.2s, background 0.3s;
             text-align: center;
-            /* CRITICAL FIX: Forces text to remain intact on one line */
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: clip;
-            padding: 8px;
+            text-overflow: ellipsis;
+            padding: 10px;
             line-height: 1.1;
         }
 
@@ -358,7 +354,7 @@
             .settings-grid { grid-template-columns: 1fr; }
             #game-stage { flex-direction: column; }
             .game-zone:nth-child(2) { border-left: none; border-top: 5px dashed var(--wood-brown); }
-            .dot-node { width: 95px; height: 95px; font-size: 20px; }
+            .dot-node { width: 90px !important; height: 90px !important; font-size: 16px !important; }
             .answer-box { font-size: 24px; }
             .intro-action-container { flex-direction: column; gap: 15px; border-radius: 20px; }
         }
@@ -787,7 +783,7 @@
         }
 
         /************************************************************************
-         * RANDOMIZED PLACEMENT & OVERLAP PROTECTION DETECTOR ENGINE
+         * RANDOMIZED PLACEMENT & AUTOMATIC DOWNSCALING ENGINE
          ************************************************************************/
         function generateSpreadLayout(count, side, tokens) {
             const container = document.getElementById(`canvas-container-${side}`);
@@ -796,35 +792,30 @@
 
             let points = [];
             let attempts = 0;
-            const maxAttempts = 15000; 
+            const maxAttempts = 5000; 
 
             let maxLength = 0;
             tokens.forEach(tok => {
                 if (tok.length > maxLength) maxLength = tok.length;
             });
 
+            // AUTOMATIC DOWNSIZING: Dynamically compute base dot diameter based on layout demands
             let dotDiameter = 145; 
-            
             if (isTeamMode) {
-                if (maxLength > 6 || count > 6) {
-                    dotDiameter = 100;        
-                } else {
-                    dotDiameter = 125;        
-                }
+                if (maxLength > 8 || count > 6) dotDiameter = 85;
+                else if (maxLength > 5 || count > 4) dotDiameter = 105;
+                else dotDiameter = 120;
             } else {
-                if (maxLength > 8) {
-                    dotDiameter = 110;
-                } else if (maxLength > 5 || count > 6) {
-                    dotDiameter = 130;
-                }
+                if (maxLength > 9 || count > 7) dotDiameter = 95;
+                else if (maxLength > 5 || count > 5) dotDiameter = 125;
             }
 
             const circleRadius = dotDiameter / 2;
-            const minBufferDistance = isTeamMode ? 10 : 25; 
+            const minBufferDistance = isTeamMode ? 8 : 15; 
             const requiredDistanceBetweenCenters = dotDiameter + minBufferDistance;
 
-            const xPadding = circleRadius + 20;
-            const yPadding = circleRadius + 20;
+            const xPadding = circleRadius + 15;
+            const yPadding = circleRadius + 15;
 
             for (let i = 0; i < count; i++) {
                 let foundValidSpot = false;
@@ -849,6 +840,7 @@
                     }
                 }
 
+                // Grid fallback if fields are tightly filled
                 if (!foundValidSpot) {
                     const cols = Math.ceil(Math.sqrt(count));
                     const rows = Math.ceil(count / cols);
@@ -866,16 +858,12 @@
             return points;
         }
 
-        /* Helper to check approximate text size and fit inside circle bounds */
+        /* Dynamic text fitting inside downscaled bounds */
         function calculateBestFontSize(text, diameter) {
-            let baseSize = 32;
-            if (isTeamMode) baseSize = diameter * 0.22;
-            else baseSize = diameter * 0.24;
-
-            // CRITICAL FIX: Smart scaling engine based on string text characters length
-            if (text.length > 8) return `${baseSize * 0.55}px`;
-            if (text.length > 6) return `${baseSize * 0.7}px`;
-            if (text.length > 4) return `${baseSize * 0.85}px`;
+            let baseSize = diameter * 0.24;
+            if (text.length > 8) return `${baseSize * 0.6}px`;
+            if (text.length > 5) return `${baseSize * 0.75}px`;
+            if (text.length > 3) return `${baseSize * 0.9}px`;
             return `${baseSize}px`;
         }
 
@@ -920,8 +908,6 @@
                 
                 dotElement.style.width = `${nodeCoords.size}px`;
                 dotElement.style.height = `${nodeCoords.size}px`;
-                
-                // CRITICAL FIX: Dynamically recalculates font size per unique text token structure
                 dotElement.style.fontSize = calculateBestFontSize(obj.text, nodeCoords.size);
                 
                 dotElement.style.left = `${nodeCoords.x}px`;
@@ -1079,7 +1065,7 @@
                 const nY = parseFloat(node.dataset.posY);
                 const radius = node.clientWidth / 2;
 
-                if (Math.hypot(mouseX - nX, mouseY - nY) < radius + 20) {
+                if (Math.hypot(mouseX - nX, mouseY - nY) < radius + 15) {
                     if (!sideState.currentChain.includes(arrIdx)) {
                         sideState.currentChain.push(arrIdx);
                         AudioFX.playTone(330 + (sideState.currentChain.length * 40), 'sine', 0.08, 0, 0.8);
@@ -1342,7 +1328,10 @@
             
             if(state[side].currentChain.length > 0) {
                 const currentQuestion = state[side].pool[state[side].index];
-                let stringOutput = state[side].currentChain.map(idx => document.getElementById(`dot-${side}-${idx}`).dataset.text);
+                let stringOutput = state[side].currentChain.map(idx => {
+                    const node = document.getElementById(`dot-${side}-${idx}`);
+                    return node ? node.dataset.text : '';
+                });
                 let formedText = (currentQuestion.type === "sentence") ? stringOutput.join(" ") : stringOutput.join("");
                 if (formedText !== currentQuestion.answer) {
                     return; 
@@ -1354,7 +1343,7 @@
         }
 
         /************************************************************************
-         * TEACHER ADMINISTRATIVE DATA HARDWARE ARCHITECTURE HOOKS
+         * TEACHER ADMINISTRATIVE DATA ARCHITECTURE HOOKS
          ************************************************************************/
         function renderSettingsUI() {
             const container = document.getElementById('settings-questions-container');
