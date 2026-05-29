@@ -799,7 +799,6 @@
                 if (tok.length > maxLength) maxLength = tok.length;
             });
 
-            // AUTOMATIC DOWNSIZING: Dynamically compute base dot diameter based on layout demands
             let dotDiameter = 145; 
             if (isTeamMode) {
                 if (maxLength > 8 || count > 6) dotDiameter = 85;
@@ -840,7 +839,6 @@
                     }
                 }
 
-                // Grid fallback if fields are tightly filled
                 if (!foundValidSpot) {
                     const cols = Math.ceil(Math.sqrt(count));
                     const rows = Math.ceil(count / cols);
@@ -858,7 +856,6 @@
             return points;
         }
 
-        /* Dynamic text fitting inside downscaled bounds */
         function calculateBestFontSize(text, diameter) {
             let baseSize = diameter * 0.24;
             if (text.length > 8) return `${baseSize * 0.6}px`;
@@ -921,7 +918,7 @@
                 dotElement.dataset.posY = nodeCoords.y;
 
                 dotElement.addEventListener('mousedown', (e) => handleInteractionStart(e, side, idx));
-                dotElement.addEventListener('touchstart', (e) => handleInteractionStart(e, side, idx), { passive: false });
+                dotElement.addEventListener('touchstart', (e) => handleInteractionStart(e, side, idx), { passive: true });
 
                 container.appendChild(dotElement);
             });
@@ -992,7 +989,6 @@
 
         function handleInteractionStart(e, side, nodeIdx) {
             if (e.target.classList.contains('jungle-btn')) return;
-            if (e.type === 'touchstart') e.preventDefault();
             
             AudioFX.init();
 
@@ -1250,16 +1246,41 @@
                 });
             });
 
-            document.getElementById('btn-check-left').addEventListener('click', () => evaluateSubmittedSequence('left'));
-            document.getElementById('btn-check-right').addEventListener('click', () => evaluateSubmittedSequence('right'));
+            // Button Event Targets
+            const checkLeft = document.getElementById('btn-check-left');
+            const checkRight = document.getElementById('btn-check-right');
+            const resetLeft = document.getElementById('btn-reset-left');
+            const resetRight = document.getElementById('btn-reset-right');
 
-            document.getElementById('btn-reset-left').addEventListener('click', () => {
+            // Explicit Touch Listeners to bypass TV focus locking
+            checkLeft.addEventListener('click', () => evaluateSubmittedSequence('left'));
+            checkLeft.addEventListener('touchstart', (e) => { e.stopPropagation(); evaluateSubmittedSequence('left'); });
+
+            checkRight.addEventListener('click', () => evaluateSubmittedSequence('right'));
+            checkRight.addEventListener('touchstart', (e) => { e.stopPropagation(); evaluateSubmittedSequence('right'); });
+
+            resetLeft.addEventListener('click', () => {
                 state.left.currentChain = [];
                 refreshNodesHighlightingStyles('left');
                 updateBottomAnswerMirrorPreview('left');
                 drawCanvasVisuals('left');
             });
-            document.getElementById('btn-reset-right').addEventListener('click', () => {
+            resetLeft.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
+                state.left.currentChain = [];
+                refreshNodesHighlightingStyles('left');
+                updateBottomAnswerMirrorPreview('left');
+                drawCanvasVisuals('left');
+            });
+
+            resetRight.addEventListener('click', () => {
+                state.right.currentChain = [];
+                refreshNodesHighlightingStyles('right');
+                updateBottomAnswerMirrorPreview('right');
+                drawCanvasVisuals('right');
+            });
+            resetRight.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
                 state.right.currentChain = [];
                 refreshNodesHighlightingStyles('right');
                 updateBottomAnswerMirrorPreview('right');
