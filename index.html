@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Jungle Connect-the-Dots Educational Game</title>
     <style>
         /* Import web fonts with high-priority swap display */
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght=700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
 
         :root {
             --jungle-green: #2d6a4f;
@@ -64,7 +64,7 @@
             font-size: 28px;
             color: var(--gold);
             text-shadow: 2px 2px #000;
-            font-family: 'Fredoka One', 'Arial Black', Impact, sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;
         }
 
         .global-controls {
@@ -297,7 +297,7 @@
             font-weight: bold;
             margin-bottom: 15px;
             text-shadow: 2px 2px #000;
-            font-family: 'Fredoka One', 'Arial Black', Impact, sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -354,7 +354,7 @@
             .settings-grid { grid-template-columns: 1fr; }
             #game-stage { flex-direction: column; }
             .game-zone:nth-child(2) { border-left: none; border-top: 5px dashed var(--wood-brown); }
-            .dot-node { width: 90px !important; height: 90px !important; font-size: 16px !important; }
+            .dot-node { font-size: inherit; }
             .answer-box { font-size: 24px; }
             .intro-action-container { flex-direction: column; gap: 15px; border-radius: 20px; }
         }
@@ -371,7 +371,7 @@
             margin-bottom: 12px;
             border-bottom: 1px solid var(--wood-brown);
             padding-bottom: 4px;
-            font-family: 'Fredoka One', 'Arial Black', sans-serif;
+            font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;
         }
 
         .form-group {
@@ -443,6 +443,83 @@
             width: 40px;
             height: 20px;
         }
+
+        /* Visual polish: typography, alignment and jungle presentation only */
+        :root { font-synthesis: none; }
+        body, button, input, select, textarea { font-family: 'Comic Neue', 'Comic Sans MS', sans-serif !important; }
+        .title-area h1, .feedback-text, .settings-block h3, #settings-panel h2 { font-family: 'Comic Neue', 'Comic Sans MS', sans-serif !important; font-weight: 700; letter-spacing: .2px; }
+        header { gap: 14px; flex-wrap: wrap; padding: 10px 18px; background: linear-gradient(110deg,rgba(21,72,49,.96),rgba(43,103,70,.94)); box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+        .title-area h1 { font-size: clamp(21px,2.2vw,32px); line-height: 1.2; }
+        .global-controls { flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
+        .jungle-btn { font-weight: 700; line-height: 1.2; letter-spacing: .15px; text-align: center; border-radius: 12px; }
+        .jungle-btn:focus-visible { outline: 3px solid #ffe59b; outline-offset: 3px; }
+        .wooden-sign { border-radius: 18px; background: linear-gradient(145deg,#bd9364,#956538 70%,#78502f); }
+        .answer-box { font-family: 'Comic Neue',sans-serif; font-size: clamp(21px,2.7vw,36px); line-height: 1.23; text-align: center; overflow-wrap: anywhere; word-break: normal; white-space: normal; padding: 2px 8px; letter-spacing: 0; }
+        .hud-row { gap: 8px; flex-wrap: wrap; justify-content: space-between; }
+        .score-badge { font-family: 'Comic Neue',sans-serif; font-weight: 700; text-align: center; line-height: 1.2; }
+        .dot-node { font-family: 'Comic Neue', 'Comic Sans MS', sans-serif !important; font-weight: 700; letter-spacing: 0; line-height: 1.06; text-align: center; text-overflow: clip; overflow-wrap: anywhere; white-space: normal; word-break: normal; padding: 7px; border-width: 5px; }
+        .feedback-text { font-size: clamp(26px,3.4vw,42px); flex-wrap: wrap; line-height: 1.15; }
+        .feedback-card { max-height: 92%; overflow-y: auto; }
+        .settings-block { border-radius: 14px; background: rgba(255,255,255,.075); }
+        .settings-block h3 { line-height: 1.25; }
+        .question-list-item { gap: 12px; overflow-wrap: anywhere; }
+        #settings-panel label { line-height: 1.35; }
+        @media (max-width: 768px) { .dot-node { font-size: inherit !important; } .settings-grid > .settings-block { grid-column: span 1 !important; } }
+
+        /* Responsive landscape play surface: preserve original controls and mechanics */
+        html, body { width:100%; height:100%; height:100dvh; overflow:hidden; }
+        #app-container { height:100%; height:100dvh; min-height:0; }
+        header { flex:0 0 auto; }
+        #game-stage { height:auto; min-height:0; flex:1 1 0; }
+        .game-zone { min-height:0; min-width:0; }
+        .canvas-container { min-height:0; min-width:0; }
+        #btn-fullscreen { white-space:nowrap; }
+        @media (pointer:coarse) { .jungle-btn { min-height:40px; } }
+        @media (max-width:950px) and (orientation:landscape) {
+          header { padding:4px 9px; gap:6px; flex-wrap:nowrap; }
+          .title-area { min-width:0; flex:0 1 auto; }
+          .title-area h1 { font-size:clamp(13px,2.1vw,19px); }
+          .global-controls { gap:5px; flex-wrap:nowrap; }
+          .jungle-btn { padding:5px 8px; font-size:clamp(11px,1.5vw,14px); border-width:2px; border-radius:8px; box-shadow:0 2px 0 #3d2514; }
+          .audio-popover { padding:3px 5px; gap:4px; border-width:1px; }
+          #vol-slider { width:40px !important; }
+          #game-stage { flex-direction:row; }
+          .game-zone:nth-child(2) { border-top:none; border-left:3px dashed var(--wood-brown); }
+          .hud-row { margin:3px auto 0; width:96%; }
+          .score-badge { padding:3px 7px; font-size:clamp(10px,1.4vw,13px); border-width:1px; }
+          .wooden-sign { margin:3px auto; padding:4px 7px; border-width:2px; border-radius:9px; width:95%; }
+          .answer-box { min-height:23px; font-size:clamp(13px,2vw,19px); padding:1px 4px; }
+          .clue-pic-holder { width:clamp(35px,8vh,65px); height:clamp(35px,8vh,65px); }
+          .game-zone > div[style*="padding:15px"] { padding:4px !important; display:flex; justify-content:center; gap:6px; }
+          .game-zone > div[style*="padding:15px"] .jungle-btn { width:auto !important; max-width:none !important; margin-left:0 !important; font-size:clamp(11px,1.5vw,14px) !important; }
+          .intro-action-container { flex-direction:row; gap:8px; padding:9px 12px; }
+          #welcome-screen { padding-bottom:5vh; }
+          .feedback-card { max-width:min(90%,480px) !important; }
+          .feedback-text { font-size:clamp(18px,3vw,27px); }
+          #rules-screen .feedback-card { padding:10px !important; }
+          #rules-screen .feedback-card > div:nth-child(2) { font-size:clamp(12px,1.8vw,16px) !important; line-height:1.3 !important; padding:7px !important; margin-bottom:8px !important; }
+          #settings-panel { padding:10px; }
+          .settings-grid { grid-template-columns:1fr 1fr; gap:10px; }
+          .settings-grid > .settings-block { grid-column:auto !important; }
+        }
+        @media (max-width:650px) and (orientation:landscape) {
+          .title-area h1 { max-width:110px; }
+          #btn-toggle-mode { max-width:88px; white-space:normal; }
+          #btn-open-settings { max-width:82px; }
+          #vol-slider { display:none; }
+        }
+        @media (orientation:portrait) and (max-width:768px) {
+          header { padding:6px; gap:5px; }
+          .global-controls { justify-content:center; }
+          .jungle-btn { padding:6px 9px; font-size:13px; }
+          #game-stage { flex-direction:column; }
+          .game-zone { flex:1 1 0; }
+          .game-zone:nth-child(2) { border-left:0; border-top:3px dashed var(--wood-brown); }
+          .hud-row { margin-top:3px; }
+          .wooden-sign { padding:5px; margin:3px auto; }
+          .answer-box { min-height:25px; font-size:18px; }
+          .game-zone > div[style*="padding:15px"] { padding:5px !important; }
+        }
     </style>
 </head>
 <body>
@@ -459,6 +536,7 @@
                     <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.4" style="width:70px;">
                 </div>
                 <button class="jungle-btn" id="btn-toggle-mode">👥 Switch Team Mode</button>
+                <button class="jungle-btn" id="btn-fullscreen" type="button" aria-label="Toggle fullscreen">⛶ Full Screen</button>
                 <button class="jungle-btn green-btn" id="btn-open-settings">⚙️ Settings Panel</button>
             </div>
         </header>
@@ -533,7 +611,7 @@
 
         <div class="feedback-overlay active" id="welcome-screen" style="z-index: 200;">
             <div class="intro-action-container">
-                <button class="jungle-btn green-btn" id="btn-intro-start" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', 'Arial Black', sans-serif;">🎮 Start Challenge</button>
+                <button class="jungle-btn green-btn" id="btn-intro-start" style="font-size: 24px; padding: 12px 35px; font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;">🎮 Start Challenge</button>
                 <button class="jungle-btn orange-btn" id="btn-blog-redirect" style="font-size: 20px; padding: 12px 25px;">🌐 More Free Resources</button>
             </div>
         </div>
@@ -546,13 +624,13 @@
                     <p style="margin-top: 8px;">2. Click <strong>"Check Answer"</strong> to test your word sequence.</p>
                     <p style="margin-top: 8px; color: #ff7675;">⚠️ Be careful! If your answer is wrong, you will <strong>lose 1 point</strong> (-1)! You can try again until you solve it!</p>
                 </div>
-                <button class="jungle-btn green-btn" id="btn-close-rules" style="font-size: 24px; padding: 12px 35px; font-family: 'Fredoka One', 'Arial Black', sans-serif;">🎮 Play Game</button>
+                <button class="jungle-btn green-btn" id="btn-close-rules" style="font-size: 24px; padding: 12px 35px; font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;">🎮 Play Game</button>
             </div>
         </div>
 
         <section id="settings-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: var(--gold); font-family: 'Fredoka One', 'Arial Black', sans-serif;">⚙️ Teacher Administration Control Console</h2>
+                <h2 style="color: var(--gold); font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;">⚙️ Teacher Administration Control Console</h2>
                 <button class="jungle-btn green-btn" id="btn-close-settings">💾 Save and Play</button>
             </div>
 
@@ -690,12 +768,8 @@
             setupPasteFeature();
             
             window.addEventListener('resize', () => {
-                resizeCanvas('left');
-                drawCanvasVisuals('left');
-                if(isTeamMode) {
-                    resizeCanvas('right');
-                    drawCanvasVisuals('right');
-                }
+                repositionDotsForViewport('left');
+                if(isTeamMode) repositionDotsForViewport('right');
             });
         });
 
@@ -809,12 +883,17 @@
                 else if (maxLength > 5 || count > 5) dotDiameter = 125;
             }
 
+            // Fit circles within the available landscape/mobile play area.
+            const columns = Math.max(1, Math.ceil(Math.sqrt(count * Math.max(1, containerWidth) / Math.max(1, containerHeight))));
+            const rows = Math.max(1, Math.ceil(count / columns));
+            const fitDiameter = Math.min((containerWidth - 20) / columns - 8, (containerHeight - 20) / rows - 8);
+            dotDiameter = Math.max(24, Math.min(dotDiameter, fitDiameter));
             const circleRadius = dotDiameter / 2;
             const minBufferDistance = isTeamMode ? 8 : 15; 
             const requiredDistanceBetweenCenters = dotDiameter + minBufferDistance;
 
-            const xPadding = circleRadius + 15;
-            const yPadding = circleRadius + 15;
+            const xPadding = circleRadius + 4;
+            const yPadding = circleRadius + 4;
 
             for (let i = 0; i < count; i++) {
                 let foundValidSpot = false;
@@ -857,11 +936,17 @@
         }
 
         function calculateBestFontSize(text, diameter) {
-            let baseSize = diameter * 0.24;
-            if (text.length > 8) return `${baseSize * 0.6}px`;
-            if (text.length > 5) return `${baseSize * 0.75}px`;
-            if (text.length > 3) return `${baseSize * 0.9}px`;
-            return `${baseSize}px`;
+            // Fit complete words inside each dot without changing dot positions or game logic.
+            const available = Math.max(18, diameter - 22);
+            const canvas = calculateBestFontSize.measureCanvas || (calculateBestFontSize.measureCanvas = document.createElement('canvas'));
+            const ctx = canvas.getContext('2d');
+            let size = Math.min(diameter * 0.28, 42);
+            while (size > 11) {
+                ctx.font = `700 ${size}px "Comic Neue", "Comic Sans MS", sans-serif`;
+                if (ctx.measureText(String(text)).width <= available) break;
+                size -= 1;
+            }
+            return `${Math.max(11, size)}px`;
         }
 
         function setupChallengeRound(side) {
@@ -929,6 +1014,25 @@
         /************************************************************************
          * INTERACTION EVENTS & CANVAS VECTOR RENDER SYSTEM
          ************************************************************************/
+        function repositionDotsForViewport(side) {
+            const container = document.getElementById(`canvas-container-${side}`);
+            const nodes = [...container.querySelectorAll('.dot-node')];
+            resizeCanvas(side);
+            if (!nodes.length || !container.clientWidth || !container.clientHeight) { drawCanvasVisuals(side); return; }
+            const positions = generateSpreadLayout(nodes.length, side, nodes.map(n => n.dataset.text));
+            nodes.forEach((node,i) => {
+                const p = positions[i];
+                node.style.left = `${p.x}px`;
+                node.style.top = `${p.y}px`;
+                node.style.width = `${p.size}px`;
+                node.style.height = `${p.size}px`;
+                node.style.fontSize = calculateBestFontSize(node.dataset.text, p.size);
+                node.dataset.posX = p.x;
+                node.dataset.posY = p.y;
+            });
+            drawCanvasVisuals(side);
+        }
+
         function resizeCanvas(side) {
             const container = document.getElementById(`canvas-container-${side}`);
             const canvas = document.getElementById(`canvas-${side}`);
@@ -1339,6 +1443,26 @@
             document.getElementById('file-import-input').addEventListener('change', processJSONImportSystemAction);
             document.getElementById('btn-clear-system').addEventListener('click', triggerFactoryHardResetAction);
 
+            const fullBtn = document.getElementById('btn-fullscreen');
+            const updateFullLabel = () => { fullBtn.textContent = document.fullscreenElement || document.webkitFullscreenElement ? '⛶ Exit Full Screen' : '⛶ Full Screen'; };
+            fullBtn.addEventListener('click', async () => {
+                try {
+                    if (document.fullscreenElement || document.webkitFullscreenElement) {
+                        if (document.exitFullscreen) await document.exitFullscreen();
+                        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                    } else {
+                        const el = document.getElementById('app-container');
+                        if (el.requestFullscreen) await el.requestFullscreen();
+                        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+                        else { alert('Fullscreen is unavailable in this browser. Use your browser’s fullscreen or Add to Home Screen option.'); return; }
+                        if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+                    }
+                } catch (err) { console.warn('Fullscreen request unavailable:', err); }
+                updateFullLabel();
+                setTimeout(() => { repositionDotsForViewport('left'); if(isTeamMode) repositionDotsForViewport('right'); }, 200);
+            });
+            document.addEventListener('fullscreenchange', updateFullLabel);
+            document.addEventListener('webkitfullscreenchange', updateFullLabel);
             audioBtn.addEventListener('click', () => {
                 if(audioEl.paused) {
                     audioEl.play().catch(e => console.log("Audio playback blocked."));
