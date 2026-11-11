@@ -1652,5 +1652,234 @@
             }
         }
     </script>
+    
+<!-- =====================================================
+     TEACHER KHEN COMMUNITY CONNECTOR
+     Game: Jungle Connect-the-Dots
+
+     Automatically loads Community JSON activities.
+     Preserves original gameplay and saved activities.
+     ===================================================== -->
+
+<script>
+(() => {
+  'use strict';
+
+  // Activate only when launched by TeacherKhen Community.
+  if (
+    window.location.hash !== '#tk-community' ||
+    !window.opener
+  ) {
+    return;
+  }
+
+  const allowedOrigins = new Set([
+    'https://teacherkhen.com',
+    'https://www.teacherkhen.com'
+  ]);
+
+  const protocol = {
+    ready: 'TK_JUNGLE_READY',
+    load: 'TK_JUNGLE_LESSON',
+    loaded: 'TK_JUNGLE_LOADED',
+    error: 'TK_JUNGLE_ERROR'
+  };
+
+  let loaded = false;
+  let received = false;
+  let attempts = 0;
+  let readyTimer = null;
+  let gameReady = false;
+
+  // Send messages back to TeacherKhen Community.
+  function notify(type, extra = {}, targetOrigin = null) {
+    if (!window.opener || window.opener.closed) return;
+
+    const message = {
+      type,
+      ...extra
+    };
+
+    if (targetOrigin) {
+      window.opener.postMessage(message, targetOrigin);
+    } else {
+      allowedOrigins.forEach(origin => {
+        window.opener.postMessage(message, origin);
+      });
+    }
+  }
+
+  // Validate the original Jungle JSON format.
+  function validateLesson(input) {
+    if (
+      !Array.isArray(input) ||
+      input.length < 1 ||
+      input.length > 500
+    ) {
+      throw new Error(
+        'Invalid Jungle JSON. Expected an array of questions.'
+      );
+    }
+
+    const valid = input.every(item => {
+      if (
+        !item ||
+        typeof item !== 'object' ||
+        Array.isArray(item)
+      ) {
+        return false;
+      }
+
+      if (
+        !['sentence', 'spelling'].includes(item.type)
+      ) {
+        return false;
+      }
+
+      if (
+        typeof item.answer !== 'string' ||
+        !item.answer.trim() ||
+        !Array.isArray(item.tokens) ||
+        item.tokens.length < 1
+      ) {
+        return false;
+      }
+
+      return item.tokens.every(token =>
+        typeof token === 'string' &&
+        token.length > 0
+      ) && (
+        item.image === undefined ||
+        typeof item.image === 'string'
+      );
+    });
+
+    if (!valid) {
+      throw new Error(
+        'The Jungle lesson has invalid question data.'
+      );
+    }
+
+    return input;
+  }
+
+  // Load the selected lesson using the game's
+  // existing questionPool and gameplay functions.
+  function loadLesson(lesson) {
+    const questions = validateLesson(lesson);
+
+    // Deep-copy the activity so the received JSON
+    // is not modified while students play.
+    questionPool = JSON.parse(
+      JSON.stringify(questions)
+    );
+
+    // Preserve the currently selected Team Mode
+    // and question synchronization setting.
+    rebuildGameSession();
+
+    // Refresh the existing Settings Panel.
+    renderSettingsUI();
+
+    // Open the actual game rather than leaving
+    // the original welcome screens displayed.
+    document.getElementById(
+      'welcome-screen'
+    )?.classList.remove('active');
+
+    document.getElementById(
+      'rules-screen'
+    )?.classList.remove('active');
+
+    document.getElementById(
+      'settings-panel'
+    ).style.display = 'none';
+
+    // Community lessons are loaded in memory.
+    // We intentionally do not overwrite
+    // jungle_game_pool in localStorage.
+  }
+
+  // Receive the selected lesson.
+  window.addEventListener('message', event => {
+    if (
+      event.source !== window.opener ||
+      !allowedOrigins.has(event.origin) ||
+      loaded ||
+      received ||
+      !gameReady
+    ) {
+      return;
+    }
+
+    if (event.data?.type !== protocol.load) {
+      return;
+    }
+
+    received = true;
+
+    try {
+      loadLesson(event.data.lesson);
+
+      loaded = true;
+      clearInterval(readyTimer);
+
+      notify(
+        protocol.loaded,
+        {},
+        event.origin
+      );
+
+      console.log(
+        'TeacherKhen Community: Jungle lesson loaded.'
+      );
+
+    } catch (error) {
+      received = false;
+
+      notify(
+        protocol.error,
+        {
+          message:
+            error?.message ||
+            'Unable to load Jungle lesson.'
+        },
+        event.origin
+      );
+    }
+  });
+
+  function announceReady() {
+    if (
+      loaded ||
+      received ||
+      !window.opener ||
+      window.opener.closed ||
+      attempts++ >= 90
+    ) {
+      clearInterval(readyTimer);
+      return;
+    }
+
+    notify(protocol.ready);
+  }
+
+  // Wait until the game's original DOM initialization
+  // has completed before receiving Community lessons.
+  window.addEventListener('DOMContentLoaded', () => {
+    gameReady = true;
+
+    announceReady();
+
+    readyTimer = setInterval(
+      announceReady,
+      1000
+    );
+  });
+
+})();
+</script>
+<!-- END JUNGLE COMMUNITY CONNECTOR -->
+
 </body>
 </html>
